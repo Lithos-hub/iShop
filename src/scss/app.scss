@@ -1,6 +1,6 @@
 @import "./variables.scss";
 
-.row {
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 50px;
@@ -19,6 +19,12 @@
   right: 0;
 }
 
+.absolute__right {
+  position: absolute;
+  right: 2vh;
+  top: 0;
+  bottom: 0;
+}
 // .col {
 //   margin-bottom: 20px;
 //   margin-inline: 20px;

@@ -15,13 +15,14 @@ import {
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCFA-PpdS_EllUvRLGcmPivvN9dJzLgiA0",
-  authDomain: "istore-2ae7a.firebaseapp.com",
-  projectId: "istore-2ae7a",
-  storageBucket: "istore-2ae7a.appspot.com",
-  messagingSenderId: "934775781718",
-  appId: "1:934775781718:web:5e63b4556d4e5f189d3ef7",
+  apiKey: "AIzaSyD6rGwIYCfqcCX_fO_S_aQjrweFKHNMbZA",
+  authDomain: "ishop-10ba5.firebaseapp.com",
+  projectId: "ishop-10ba5",
+  storageBucket: "ishop-10ba5.appspot.com",
+  messagingSenderId: "46371527274",
+  appId: "1:46371527274:web:bb15fd1e5f81705b170813"
 };
+
 
 // Initialize Firebase
 

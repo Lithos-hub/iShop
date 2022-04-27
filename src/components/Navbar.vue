@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-gradient-primary">
+  <nav class="navbar bg-gradient-primary">
     <div class="navbar__logo--shape"></div>
     <div class="navbar__logo">
       <h1 class="text__gradient--tertiary">iShop</h1>
@@ -37,13 +37,14 @@
     <div v-else class="navbar__menuIcon--wrapper" @click="toggleMobileMenu">
       <mdicon name="menu" size="30" />
     </div>
+  </nav>
     <nav class="navbar__expandMenu--wrapper">
-      <div class="row">
+      <div class="grid">
         <div class="navbar__expandMenu--closeBtn" @click="toggleMobileMenu">
           <mdicon name="close" size="30" />
         </div>
-        <div>
-          <h1 class="text__gradient--tertiary absolute__centered">iShop</h1>
+        <div class="navbar__expandMenu--title">
+          <h1 class="text__gradient--tertiary">iShop</h1>
         </div>
       </div>
       <div class="d-flex absolute__centered">
@@ -66,11 +67,7 @@
           <mdicon name="account-cancel" size="30" />
         </button>
       </div>
-      <div id="expandMenu__header" class="d-flex justify-center absolute__bottom">
-        <Header />
-      </div>
     </nav>
-  </nav>
 </template>
 
 <script setup>
@@ -270,7 +267,7 @@ nav {
   top: 0;
   right: -50vw;
   width: 0%;
-  height: 25vh;
+  height: 180px;
   opacity: 0;
   background: $gradientPrimary;
 
@@ -280,20 +277,30 @@ nav {
   }
 }
 
+.navbar__expandMenu--title {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translate(0%, -50%);
+}
+
 .expanded__menu {
   transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   width: 100%;
   left: 0vw;
   right: 0vw;
   opacity: 1;
+  height: 180px;
 }
 
 .navbar__expandMenu--closeBtn {
   cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 2vh;
+  transform: translate(0%, -50%);
   color: white;
-  margin: 2vh;
-  max-width: 30px;
-  max-height: 30px;
+  margin-block: auto;
   text-align: center;
 }
 </style>

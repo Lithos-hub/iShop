@@ -1,9 +1,13 @@
 <template>
-  <div class="store">
+  <div class="shop">
+    <small class="text--white absolute__right">Time: {{ time }}s</small>
+    <p class="time__warning" v-if="time > 5">
+        The server response is taking a little while, please wait.
+    </p>
     <div class="spinner" v-if="isLoading"></div>
     <div v-else>
-      <h3 class="store__results">{{ products.length }} results</h3>
-      <div class="row">
+      <h3 class="shop__results">{{ products.length }} results</h3>
+      <div class="grid">
         <div v-for="product in products">
           <div class="col">
             <div class="card">
@@ -38,6 +42,7 @@ const shopStore = useShopStore();
 
 let isLoading = computed(() => shopStore.isLoading);
 let products = computed(() => shopStore.productsList);
+let time = computed(() => shopStore.timeResponse);
 
 onMounted(() => {
   shopStore.getStoreProducts();
@@ -46,6 +51,12 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import "../scss/app.scss";
+@import "../scss/_variables.scss";
+
+.time__warning {
+  color: $textWarning;
+  text-align: center;
+}
 
 .spinner {
   position: fixed;
@@ -70,7 +81,7 @@ onMounted(() => {
   }
 }
 
-.store__results {
+.shop__results {
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
