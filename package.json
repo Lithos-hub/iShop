@@ -1,0 +1,29 @@
+{
+  "name": "vite-primera-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mdi/js": "^6.6.96",
+    "axios": "^0.26.1",
+    "firebase": "^9.6.11",
+    "mdi-vue": "^3.0.12",
+    "pinia": "^2.0.13",
+    "vue": "^3.2.25",
+    "vue-axios": "^3.4.1",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.1",
+    "node-sass": "^7.0.1",
+    "sass": "^1.50.1",
+    "sass-loader": "^12.6.0",
+    "vite": "^2.9.5",
+    "vue-loader": "^17.0.0",
+    "vue-template-compiler": "^2.6.14"
+  }
+}
