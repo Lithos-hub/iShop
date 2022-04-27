@@ -1,9 +1,9 @@
 <template>
   <div class="app">
-    <div v-if="this.$route.path !== '/'">
+    <div class="sticky" v-if="this.$route.path !== '/'">
       <Navbar />
-      <!-- <Header id="app__header" />  -->
     </div>
+      <Header id="shop__categoriesMenu" v-if="this.$route.path === '/shop'" /> 
     <div class="main-container">
       <router-view />
     </div>
@@ -22,9 +22,27 @@ watch(() => console.log(window.onScroll()));
 <style lang="scss">
 @import './scss/variables';
 
-.navbar__header--wrapper {
+.sticky {
   position: sticky;
   z-index: 9999;
+  top: 0;
+  left: 0;
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 2px 5px black, 0px 5px 10px #101010;
+  color: #151515;
+  padding: 0 auto;
+}
+
+#shop__categoriesMenu {
+  position: sticky;
+  z-index: 9999;
+  top: 6.3vh;
+  left: 0;
+  width: 100%;
+  height: 80px;
 }
 
 .app {

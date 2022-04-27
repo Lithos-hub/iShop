@@ -1,7 +1,7 @@
 <template>
   <div class="fixed__centered">
     <h3 class="text__gradient--secondary">
-      iStore is a <strong>Single Page Application</strong> made with Vue 3 powered by Vite and
+      iShop is a <strong>Single Page Application</strong> made with Vue 3 powered by Vite and
       Pinia
     </h3>
     <h3 class="text__gradient--secondary">

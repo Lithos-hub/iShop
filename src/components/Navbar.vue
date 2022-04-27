@@ -2,7 +2,7 @@
   <nav class="bg-gradient-primary">
     <div class="navbar__logo--shape"></div>
     <div class="navbar__logo">
-      <h1 class="text__gradient--tertiary">iStore</h1>
+      <h1 class="text__gradient--tertiary">iShop</h1>
     </div>
     <div class="navbar__search--input">
       <input
@@ -43,7 +43,7 @@
           <mdicon name="close" size="30" />
         </div>
         <div>
-          <h1 class="text__gradient--tertiary absolute__centered">iStore</h1>
+          <h1 class="text__gradient--tertiary absolute__centered">iShop</h1>
         </div>
       </div>
       <div class="d-flex absolute__centered">
@@ -70,9 +70,6 @@
         <Header />
       </div>
     </nav>
-      <div id="navbarMenu__header" class="d-flex justify-center absolute__bottom">
-        <Header />
-      </div>
   </nav>
 </template>
 
@@ -82,7 +79,6 @@ import { listenScroll } from "../utils/scrollFX";
 import { useCartStore } from "../stores/cart";
 import { useUserStore } from "../stores/user";
 import { computed } from "@vue/reactivity";
-import Header from "./Header.vue";
 
 const cartStore = useCartStore();
 const userStore = useUserStore();
@@ -123,12 +119,9 @@ nav {
   z-index: 9999;
   top: 0;
   left: 0;
-  width: auto;
-  display: flex;
-  justify-content: space-between;
+  height: 100%;
+  width: 100%;
   box-shadow: 0px 2px 5px black, 0px 5px 10px #101010;
-  color: #151515;
-  padding: 0 auto;
 }
 
 .navbar__logo--shape {
