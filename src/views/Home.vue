@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed__centered">
+  <section class="home reflections fixed__centered">
     <h2 class="text__gradient--primary">Fake Store made with</h2>
     <div class="techIcon__row">
       <div class="techIcon__wrapper">
@@ -17,13 +17,30 @@
         <p class="text--pinia">Pinia</p>
       </div>
     </div>
-  </div>
+  </section>
+  <section class="version__wrapper">
+    <small>{{ version }}</small>
+  </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const mayor = ref(0);
+const minor = ref(5);
+const patch = ref(0);
+const version = `V${mayor.value}.${minor.value}.${patch.value}`;
+
+</script>
 
 <style lang="scss" scoped>
 @import "../scss/app.scss";
+
+.home {
+  border-radius: 25px;
+  padding: 50px;
+  box-shadow: 0px 5px 30px #202020;
+}
 
 h1 {
   font-size: 60px;
@@ -42,5 +59,14 @@ h1 {
 }
 .techIcon__wrapper {
   width: 200px;
+}
+
+.version__wrapper {
+  position: fixed;
+  bottom: 1vh;
+  left: 1vh;
+  background: #202020;
+  border-radius: 5px;
+  padding: 10px;
 }
 </style>

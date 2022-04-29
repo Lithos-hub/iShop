@@ -62,8 +62,9 @@ header {
         transition: all .3s ease-in-out;
         padding: 5px;
         border: none;
-        border-radius: 25px;
+        border-radius: 10px;
         width: 150px;
+        height: 40px;
         margin-inline: 15px;
         text-transform: capitalize;
         font-size: 1rem;

@@ -38,6 +38,12 @@ const routes = [
         beforeEnter: requiresAuth,
     },
     {
+        path: '/product/:id',
+        name: 'Product',
+        component: () => import('./views/Product.vue'),
+        beforeEnter: requiresAuth,
+    },
+    {
         path: '/about',
         name: 'About',
         component: () => import('./views/About.vue'),

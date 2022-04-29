@@ -8,7 +8,7 @@
       <input
         v-model="inputSearch"
         type="text"
-        placeholder="Search for a product"
+        placeholder="Search for a product (soon)"
       />
       <div class="navbar__search--icon">
         <mdicon name="magnify" size="30" />
@@ -17,7 +17,7 @@
     <div v-if="isUsingFullHDScreen" class="navbar__links--wrapper">
       <div v-for="link in links">
         <router-link
-          class="navbar__links"
+          class="navbar__links reflections"
           router-link-exact-active
           :to="link.href"
           >{{ link.text }}</router-link
@@ -50,7 +50,7 @@
       <div class="d-flex absolute__centered">
         <div v-for="link in links">
           <router-link
-            class="navbar__links"
+            class="navbar__links reflections"
             router-link-exact-active
             :to="link.href"
             >{{ link.text }}</router-link
@@ -195,7 +195,7 @@ nav {
 }
 
 .navbar__links {
-  background: #303030;
+  // background: #303030;
   color: #ffffff;
   padding: 10px;
   padding-inline: 1.2rem;

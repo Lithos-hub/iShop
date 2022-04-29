@@ -1,17 +1,17 @@
 <template>
-  <div class="shop">
-    <small class="text--white absolute__right">Time: {{ time }}s</small>
+  <section class="shop">
+    <small class="text--black absolute__right">Time: {{ time }}s</small>
     <p class="time__warning" v-if="time > 5">
         The server response is taking a little while, please wait.
     </p>
     <div class="spinner" v-if="isLoading"></div>
     <div v-else>
-      <h3 class="shop__results">{{ products.length }} results</h3>
+      <h3 class="text--black shop__results">{{ products.length }} results</h3>
       <div class="grid">
         <div v-for="product in products">
           <div class="col">
-            <div class="card">
-                <CardBadge :product="product" :badge-class="product.category" />
+            <div class="card" @click="goProductDetails(product.id)">
+              <CardBadge class="card__badge" :product="product" :badge-class="product.category" />
               <div class="card__image">
                 <img :src="product.image" />
               </div>
@@ -30,20 +30,23 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import { onMounted, computed } from "vue";
 import CardBadge from "../components/CardBadge.vue";
 import { useShopStore } from "../stores/shop";
-
+import { useRouter } from "vue-router";
 const shopStore = useShopStore();
 
 let isLoading = computed(() => shopStore.isLoading);
 let products = computed(() => shopStore.productsList);
 let time = computed(() => shopStore.timeResponse);
 
+const router = useRouter();
+
+const goProductDetails = (id) => router.push(`/product/${id}`);
 onMounted(() => {
   shopStore.getStoreProducts();
 });
@@ -82,10 +85,14 @@ onMounted(() => {
 }
 
 .shop__results {
-    color: white;
     font-size: 1.5rem;
     font-weight: bold;
     margin-left: 8vh;
 }
 
+.card__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 </style>

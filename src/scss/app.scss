@@ -25,11 +25,10 @@
   top: 0;
   bottom: 0;
 }
-// .col {
-//   margin-bottom: 20px;
-//   margin-inline: 20px;
-// }
 
+ul {
+  list-style: none;
+}
 .fixed__centered {
   position: fixed;
   top: 50%;
@@ -46,8 +45,45 @@
   text-align: center;
 }
 
+.reflections {
+  will-change: background-position;
+  background: linear-gradient(120deg, #202020 45%, #3b3b3b 5%, #202020 50%);
+  background-repeat: no-repeat,;
+  background-position: 99% center;
+  background-size: 250% 200%;
+  animation: reflection 0.5s ease-in;
+  animation-iteration-count: 2;
+  animation-delay: 2s;
+    &:hover:not(.home) {
+     background-position: 0% center;
+  }
+}
+
+@keyframes reflection {
+  0% {
+    background-position: 100% center;
+  }
+  100% {
+    
+    background-position: 0% center;
+  }
+}
+
+// Colors 
+
+.text--black {
+  color: black;
+}
 .text--white {
   color: white;
+}
+
+.danger--text {
+  color: #ff5252;
+}
+
+.success--text {
+  color: #00c853;
 }
 
 .text--vue {
@@ -100,11 +136,7 @@
 }
 
 .card__badge {
-  position: absolute;
-  top: 0;
-  right: 0;
   border-radius: 0px 10px 0px 10px;
-  width: auto;
   height: auto;
   padding: 10px;
   font-size: 13px;

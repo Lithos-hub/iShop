@@ -1,5 +1,5 @@
 <template>
-  <div :class="'card__badge ' + colorBadge(props.product.category)">
+  <div :class="colorBadge(props.product.category)">
     {{ props.product.category }}
   </div>
 </template>

@@ -1,16 +1,42 @@
 <template>
-  <div class="index">
-    <button @click="userStore.login()">
-      Enter
+  <section class="index">
+    <button
+      @click="userStore.login()"
+      @mouseover="changeText(true)"
+      @mouseout="changeText(false)"
+    >
+      <span id="first-text">{{ text }}</span>
+      <span id="second-text">{{ newText }}</span>
     </button>
-    
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { useUserStore } from '../stores/user';
+import { ref } from "vue";
+import { useUserStore } from "../stores/user";
 const userStore = useUserStore();
 
+let text = ref("Enter");
+let newText = ref(`Let's buy something!`);
+const changeText = (change) => {
+  let firstText = document.querySelector("#first-text");
+  let secondText = document.querySelector("#second-text");
+  if (change) {
+    firstText.style.opacity = 0;
+      secondText.style.opacity = 1;
+    setTimeout(() => {
+      secondText.style.display = "block";
+      firstText.style.display = "none";
+    }, 1000);
+  } else {
+    secondText.style.opacity = 0;
+    firstText.style.opacity = 1;
+    setTimeout(() => {
+      firstText.style.display = "block";
+      secondText.style.display = "none";
+    }, 1000);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -44,6 +70,16 @@ button {
     width: 100vw;
     border-radius: 0px;
   }
+}
+
+#first-text {
+  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+  opacity: 1;
+}
+#second-text {
+  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+  opacity: 0;
+  display: none;
 }
 
 small {

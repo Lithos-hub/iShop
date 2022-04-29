@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div>
     <div class="sticky" v-if="this.$route.path !== '/'">
       <Navbar />
     </div>
@@ -13,14 +13,20 @@
 <script setup>
 import Navbar from "./components/Navbar.vue";
 import Header from "./components/Header.vue";
+import { listenScroll } from "./utils/scrollFX";
+import { useRoute } from 'vue-router';
 import { watch } from "vue";
 
-window.onScroll = () => document.body.scrollTop > 80 || document.documentElement.scrollTop > 80;
-watch(() => console.log(window.onScroll()));
+const route = useRoute()
+
+watch(() => route.path, (newPath) => {
+  newPath === '/shop' ? window.onscroll = () => listenScroll() : window.onscroll = null
+})
+
 </script>
 
 <style lang="scss">
-@import './scss/variables';
+@import './scss/_variables.scss';
 
 .sticky {
   position: sticky;
@@ -31,28 +37,25 @@ watch(() => console.log(window.onScroll()));
   width: 100%;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0px 2px 5px black, 0px 5px 10px #101010;
+  box-shadow: 0px 0px 10px #404040;
   color: #151515;
   padding: 0 auto;
 }
 
 #shop__categoriesMenu {
   position: sticky;
-  z-index: 9999;
+  z-index: 99;
   top: 6.3vh;
   left: 0;
   width: 100%;
-  height: 80px;
-}
-
-.app {
-  background: #202020;
+  height: 60px;
 }
 
 html, body {
   margin: 0 auto;
   padding: 0 auto;
-  background: #202020;
+  background: #ebebeb;
+  background-repeat: no-repeat;
   color: $textPrimary;
 }
 
