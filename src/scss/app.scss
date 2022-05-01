@@ -12,6 +12,38 @@
   justify-content: center;
 }
 
+.d-block {
+  display: block;
+}
+
+.ml-1 {
+  margin-left: 1rem;
+}
+
+.ml-2 {
+  margin-left: 2rem;
+}
+
+.ml-3 {
+  margin-left: 3rem;
+}
+
+.ml-4 {
+  margin-left: 4rem;
+}
+
+.ml-5 {
+  margin-left: 5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.relative {
+  position: relative;
+}
+
 .absolute__bottom {
   position: absolute;
   bottom: 2vh;
@@ -28,6 +60,11 @@
 
 ul {
   list-style: none;
+}
+
+button:active {
+  transition: all .1s ease-out;
+  filter: brightness(1.5);
 }
 .fixed__centered {
   position: fixed;

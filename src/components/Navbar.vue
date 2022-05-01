@@ -61,10 +61,10 @@
           @click="this.$router.push('/cart')"
         >
           <div class="cart__button--badge">{{ cartStore.getCartLength }}</div>
-          <mdicon name="cart" size="30" />
+          <mdicon name="cart" :size="isUsingFullHDScreen ? 30 : 22" />
         </button>
         <button class="navbar__btn account__button" @click="userStore.logout()">
-          <mdicon name="account-cancel" size="30" />
+          <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 30 : 22" />
         </button>
       </div>
     </nav>
@@ -118,7 +118,7 @@ nav {
   left: 0;
   height: 100%;
   width: 100%;
-  box-shadow: 0px 2px 5px black, 0px 5px 10px #101010;
+  box-shadow: 0px 0px 10px #404040;
 }
 
 .navbar__logo--shape {
@@ -159,7 +159,7 @@ nav {
 
   input {
     width: 100%;
-    height: 45px;
+    height: clamp(25px, 35px, 45px);
     border-radius: 5px 0px 0px 5px;
     border: none;
     padding-left: 10px;
@@ -172,10 +172,10 @@ nav {
 
 .navbar__search--icon {
   cursor: pointer;
-  height: 29px;
+  height: clamp(15px, 30px, 35px);
   background: #202020;
   padding-inline: 10px;
-  padding-block: 10px;
+  padding-block: clamp(5px, 10px, 4px);
   border-radius: 0px 5px 5px 0px;
   color: white;
 
@@ -197,7 +197,7 @@ nav {
 .navbar__links {
   // background: #303030;
   color: #ffffff;
-  padding: 10px;
+  padding: clamp(5px, 10px, 5px);
   padding-inline: 1.2rem;
   border-radius: 20px;
   text-decoration: none;
@@ -216,8 +216,8 @@ nav {
   position: relative;
   color: white;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: clamp(35px, 30px, 30px);
+  height: clamp(35px, 30px, 30px);
   margin-left: 20px;
 }
 
@@ -234,15 +234,15 @@ nav {
 
 .cart__button--badge {
   background: rgb(201, 47, 47);
-  font-size: 1em;
+  font-size: clamp(10px, 12px, 12px);
   font-weight: bold;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: clamp(20px, 30px, 15px);
+  height: clamp(20px, 30px, 15px);
   padding: 2px;
   position: absolute;
-  right: 0;
-  top: -5px;
+  right: clamp(-5px, -10px, -10px);
+  top: clamp(0px, 0px, 10px);
 }
 
 .account__button {
@@ -267,12 +267,12 @@ nav {
   top: 0;
   right: -50vw;
   width: 0%;
-  height: 180px;
+  height: 120px;
   opacity: 0;
   background: $gradientPrimary;
 
   h1 {
-    font-size: 2em;
+    font-size: clamp(25px, 32px, 38px);
     top: 0vh;
   }
 }

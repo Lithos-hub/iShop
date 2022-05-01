@@ -1,10 +1,10 @@
 <template>
   <section class="shop">
-    <small class="text--black absolute__right">Time: {{ time }}s</small>
+    <small class="text--black absolute__right">Time: {{ shopStore.timeResponse }}s</small>
     <p class="time__warning" v-if="time > 5">
         The server response is taking a little while, please wait.
     </p>
-    <div class="spinner" v-if="isLoading"></div>
+    <Spinner v-if="isLoading" />
     <div v-else>
       <h3 class="text--black shop__results">{{ products.length }} results</h3>
       <div class="grid">
@@ -36,13 +36,13 @@
 <script setup>
 import { onMounted, computed } from "vue";
 import CardBadge from "../components/CardBadge.vue";
+import Spinner from "../components/Spinner.vue";
 import { useShopStore } from "../stores/shop";
 import { useRouter } from "vue-router";
 const shopStore = useShopStore();
 
 let isLoading = computed(() => shopStore.isLoading);
 let products = computed(() => shopStore.productsList);
-let time = computed(() => shopStore.timeResponse);
 
 const router = useRouter();
 
@@ -59,29 +59,6 @@ onMounted(() => {
 .time__warning {
   color: $textWarning;
   text-align: center;
-}
-
-.spinner {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  width: 100px;
-  height: 100px;
-  border: 10px solid transparent;
-  border-block: 10px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s infinite cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 .shop__results {

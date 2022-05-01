@@ -7,30 +7,30 @@ export const listenScroll = () => {
   const categoriesMenu = document.querySelector("#shop__categoriesMenu");
   const expandedMenu = document.querySelector(".navbar__expandMenu--wrapper");
   if (document.documentElement.scrollTop > 80) {
-    navbar.style.height = "50px";
-    navbar.style.paddingBlock = "5px";
+    navbar.style.height = window.innerWidth < 1920 ? "40px" : "50px";
+    navbar.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "5px";
     navbar.style.paddingInline = "10px";
-    expandedMenu.style.height="50px";
-    expandedMenu.style.paddingBlock = "5px";
+    expandedMenu.style.height = window.innerWidth < 1920 ? "40px" : "50px";
+    expandedMenu.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "5px";
     expandedMenu.style.paddingInline = "10px";
-    logo.style.fontSize = "1em";
-    logo.style.top = "-1vh"
+    logo.style.fontSize = window.innerWidth < 1920 ? "18px" : "1em";
+    logo.style.top = window.innerWidth < 1920 ? "-2vh" : "-1vh"
     logo.style.left = "-2vw"
     links.style.right = "2vh";
     if (categoriesMenu) {
       categoriesMenu.style.background = "linear-gradient(120deg, #4cbaff, #6764ff, #9d00ff, #a04cff)";
-      categoriesMenu.style.boxShadow = "0px 2px 5px black, 0px 5px 10px #101010";
+      categoriesMenu.style.boxShadow = "0px 0px 10px #404040";
     }
   } else {
-    navbar.style.height = "120px";
-    navbar.style.paddingBlock = "30px";
+    navbar.style.height = window.innerWidth < 1920 ? "60px" : "120px";
+    navbar.style.paddingBlock = window.innerWidth < 1920 ? "15px" : "30px";
     navbar.style.paddingInline = "20px";
-    expandedMenu.style.height = "120px";
-    expandedMenu.style.paddingBlock = "30px";
+    expandedMenu.style.height = window.innerWidth < 1920 ? "60px" : "120px";
+    expandedMenu.style.paddingBlock = window.innerWidth < 1920 ? "15px" : "30px";
     expandedMenu.style.paddingInline = "20px";
-    logo.style.fontSize = "2rem";
-    logo.style.top = "-1vh"
-    logo.style.left = "0vw"
+    logo.style.fontSize = window.innerWidth < 1920 ? "1.5rem" : "2rem";
+    logo.style.top = window.innerWidth < 1920 ? "-3vh" : "-1vh"
+    logo.style.left = window.innerWidth < 1920 ? "-2vw" : "0vw"
     if (categoriesMenu) {
       categoriesMenu.style.background = "transparent";
       categoriesMenu.style.boxShadow = "none";

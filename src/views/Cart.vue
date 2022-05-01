@@ -68,9 +68,9 @@
       <h1>Order summary</h1>
       <h2 class="cart__summary--subtotal">Subtotal: {{ computedSubtotal }}€</h2>
       <div class="coupon--wrapper">
-        <input placeholder="Write your coupon code here" v-model="couponCode" maxlength="8" /><button @click="checkCoupon()">Apply coupon</button>
+        <input placeholder="XX000000" v-model="couponCode" maxlength="8" /><button @click="checkCoupon()">Apply coupon</button>
       </div>
-      <small class="danger--text" v-if="!correctCoupon && couponChecked">Coupon format incorrect!</small>
+      <small class="danger--text" v-if="!correctCoupon && couponChecked">Incorrect coupon format!</small>
       <small class="success--text" v-if="correctCoupon && couponChecked">Coupon applied!</small>
       <button class="cart__summary--checkoutButton">
         Checkout {{ items.length > 1 ? "products" : "product" }}
@@ -84,14 +84,16 @@ import { useCartStore } from "../stores/cart";
 import { onMounted, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import CardBadge from "../components/CardBadge.vue";
-const useSore = useCartStore();
+
+const cartStore = useCartStore();
 
 let productsChecked = ref([]);
-const { items } = storeToRefs(useSore);
-const computedSubtotal = computed(() => Math.round(items.value.reduce((a, b) => a + b.price, 0) * 100) / 100);
+const { items } = storeToRefs(cartStore);
+const computedSubtotal = computed(() => Math.round(items.value.reduce((a, b) => a + b.price * b.quantity, 0) * 100) / 100);
 let couponCode = ref('');
 let correctCoupon = ref(false);
 let couponChecked = ref(false);
+
 const toggleProduct = (product) => {
   let match = productsChecked.value.find((prod) => prod === product);
   if (match) {
@@ -102,10 +104,11 @@ const toggleProduct = (product) => {
     productsChecked.value.push(product);
   }
 };
+
 const increment = (product) => product.quantity++;
 const decrease = (product) => product.quantity > 1 ? product.quantity-- : null;
-const removeSingle = (product) => useSore.removeSingle(product);
-const removeMultiple = () => productsChecked.value.forEach(prod => useSore.removeSingle(prod), productsChecked.value = []);
+const removeSingle = (product) => cartStore.removeSingle(product);
+const removeMultiple = () => productsChecked.value.forEach(prod => cartStore.removeSingle(prod), productsChecked.value = []);
 const checkCoupon = () => {
   let test = /[A-Z]{2}\d{6}/.test(couponCode.value)
   if (test) {
@@ -116,16 +119,6 @@ const checkCoupon = () => {
     couponChecked.value = true;
   }
 }
-
-onMounted(() => {
-  const mapped = items.value.map((prod) => {
-    return {
-      ...prod,
-      quantity: 1,
-    };
-  });
-  useSore.mapProducts(mapped);
-});
 </script>
 
 <style lang="scss" scoped>
@@ -161,7 +154,7 @@ onMounted(() => {
   display: flex;
   cursor: pointer;
   padding-inline: 20px;
-  box-shadow: 0px 2px 10px #505050;
+  box-shadow: 0px 2px 10px #404040;
   margin-block: 20px;
 
   &:hover {
@@ -293,9 +286,10 @@ onMounted(() => {
   position: absolute;
   bottom: 0%;
   left: 50%;
+  width: 90%;
   transform: translate(-50%, -50%);
   transition: all 0.3s ease-out;
-  padding: 10px;
+  padding: 5px;
   margin: 0 auto;
   border-radius: 20px;
   border: none;
@@ -305,7 +299,6 @@ onMounted(() => {
 
   &:hover {
     box-shadow: 0px 5px 10px #202020;
-    transform: scale(1.1);
   }
 }
 

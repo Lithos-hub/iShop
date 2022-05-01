@@ -36,8 +36,6 @@ onMounted(() => {
 header {
     display: flex;
     position: relative;
-    top: 1vh;
-    left: 0;
     width: 100%;
     justify-content: center;
 }
