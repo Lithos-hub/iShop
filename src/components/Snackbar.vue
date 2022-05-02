@@ -1,14 +1,13 @@
 <template>
-    <div :class="'snackbar ' + cartStore.cartNotification.color">
-        <p>{{ cartStore.cartNotification.message }}</p>
+    <div :class="'snackbar ' + snackbarStore.color">
+        <p>{{ snackbarStore.message }}</p>
     </div>
 </template>
 
 <script setup>
-import { useCartStore } from '../stores/cart';
+import { useSnackbarStore } from '../stores/snackbar';
 
-
-const cartStore = useCartStore();
+const snackbarStore = useSnackbarStore();
 
 
 </script>

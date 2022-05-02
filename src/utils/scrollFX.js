@@ -6,18 +6,21 @@ export const listenScroll = () => {
   const links = document.querySelector(".navbar__links--wrapper");
   const categoriesMenu = document.querySelector("#shop__categoriesMenu");
   const expandedMenu = document.querySelector(".navbar__expandMenu--wrapper");
-  if (document.documentElement.scrollTop > 80) {
-    navbar.style.height = window.innerWidth < 1920 ? "40px" : "50px";
+  if (document.documentElement.scrollTop > 150 || document.body.scrollTop > 150) {
+    navbar.style.height = "48px";
     navbar.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "5px";
     navbar.style.paddingInline = "10px";
-    expandedMenu.style.height = window.innerWidth < 1920 ? "40px" : "50px";
+    expandedMenu.style.height = "48px";
     expandedMenu.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "5px";
     expandedMenu.style.paddingInline = "10px";
     logo.style.fontSize = window.innerWidth < 1920 ? "18px" : "1em";
     logo.style.top = window.innerWidth < 1920 ? "-2vh" : "-1vh"
-    logo.style.left = "-2vw"
-    links.style.right = "2vh";
+    logo.style.left = "-2vw";
+    if (links) {
+      links.style.right = "2vh";
+    }
     if (categoriesMenu) {
+      categoriesMenu.style.top = window.innerWidth < 1920 ? "7.5vh" : "5.5vh";
       categoriesMenu.style.background = "linear-gradient(120deg, #4cbaff, #6764ff, #9d00ff, #a04cff)";
       categoriesMenu.style.boxShadow = "0px 0px 10px #404040";
     }

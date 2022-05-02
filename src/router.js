@@ -28,6 +28,7 @@ const routes = [
     {
         path: '/shop',
         name: 'Shop',
+        props: true,
         component: () => import('./views/Shop.vue'),
         beforeEnter: requiresAuth,
     },

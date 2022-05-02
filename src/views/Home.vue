@@ -21,6 +21,11 @@
   <section class="version__wrapper">
     <small>{{ version }}</small>
   </section>
+  <section class="github__wrapper">
+    <a href="https://github.com/Lithos-hub/iShop" target="_blank">
+      <mdicon name="github" size="30" />
+    </a>
+  </section>
 </template>
 
 <script setup>
@@ -113,6 +118,17 @@ h1 {
   }
   100% {
     filter: hue-rotate(-150deg) brightness(1.5);
+  }
+}
+
+.github__wrapper {
+  position: fixed;
+  left: 6vw;
+  bottom: 1.5vh;
+
+  a {
+    color: #202020;
+    text-decoration: none;
   }
 }
 </style>

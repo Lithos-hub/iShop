@@ -1,8 +1,10 @@
 <template>
   <section class="shop">
-    <small class="text--black absolute__right">Time: {{ shopStore.timeResponse }}s</small>
-    <p class="time__warning" v-if="time > 5">
-        The server response is taking a little while, please wait.
+    <small class="text--black absolute__right"
+      >Time: {{ shopStore.timeResponse }}s</small
+    >
+    <p class="time__warning" v-if="shopStore.timeResponse > 5">
+      The server response is taking a little while, please wait.
     </p>
     <Spinner v-if="isLoading" />
     <div v-else>
@@ -10,45 +12,62 @@
       <div class="grid">
         <div v-for="product in products">
           <div class="col">
-            <div class="card" @click="goProductDetails(product.id)">
-              <CardBadge class="card__badge" :product="product" :badge-class="product.category" />
-              <div class="card__image">
-                <img :src="product.image" />
-              </div>
-              <div class="card__body">
-                <h3>{{ product.price }} €</h3>
-              </div>
-              <div class="card__title">
-                {{
-                  product.title.length > 50
-                    ? product.title.slice(0, 50) + "..."
-                    : product.title
-                }}
-              </div>
-            </div>
+            <ProductCard :product="product" />
           </div>
         </div>
       </div>
     </div>
   </section>
+  <Snackbar v-if="snackbarStore.show" />
 </template>
 
 <script setup>
-import { onMounted, computed } from "vue";
-import CardBadge from "../components/CardBadge.vue";
+import { onMounted, computed, watch } from "vue";
 import Spinner from "../components/Spinner.vue";
-import { useShopStore } from "../stores/shop";
-import { useRouter } from "vue-router";
-const shopStore = useShopStore();
+import Snackbar from "../components/Snackbar.vue";
+import ProductCard from "../components/ProductCard.vue";
+import { useProductStore } from "../stores/product";
+import { useRoute } from "vue-router";
+import { useSnackbarStore } from "../stores/snackbar";
+
+const shopStore = useProductStore();
+const route = useRoute();
+const snackbarStore = useSnackbarStore();
+
+const category = route.query.category;
 
 let isLoading = computed(() => shopStore.isLoading);
 let products = computed(() => shopStore.productsList);
+let searchInput = computed(() => shopStore.searchQuery);
+let isSearchingByCategory = !!category;
+watch(
+  () => shopStore.searchQuery,
+  (newVal, oldVal) => {
+    if (newVal === "") {
+      shopStore.getStoreProducts();
+    } else if (newVal !== oldVal) {
+      shopStore.filterProducts(false);
+    }
+  }
+);
+watch(
+  () => route.params.category,
+  (newVal) => {
+    if (newVal) {
+      shopStore.getProductsByCategory(newVal);
+    }
+  }
+);
 
-const router = useRouter();
-
-const goProductDetails = (id) => router.push(`/product/${id}`);
 onMounted(() => {
-  shopStore.getStoreProducts();
+  if (category) {
+    shopStore.getProductsByCategory(category);
+  } else if (searchInput && !isSearchingByCategory) {
+    shopStore.filterProducts(false);
+    shopStore.searchQuery = "";
+  } else {
+    shopStore.getStoreProducts();
+  }
 });
 </script>
 
@@ -62,14 +81,8 @@ onMounted(() => {
 }
 
 .shop__results {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-left: 8vh;
-}
-
-.card__badge {
-  position: absolute;
-  top: 0;
-  right: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 8vh;
 }
 </style>

@@ -45,10 +45,9 @@ watch(() => route.path, (newPath) => {
 #shop__categoriesMenu {
   position: sticky;
   z-index: 99;
-  top: clamp(5.5vh, 6vh, 6.3vh);
+  height: 40px;
   left: 0;
   width: 100%;
-  height: 60px;
 }
 
 html, body {

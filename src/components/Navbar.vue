@@ -2,15 +2,16 @@
   <nav class="navbar bg-gradient-primary">
     <div class="navbar__logo--shape"></div>
     <div class="navbar__logo">
-      <h1 class="text__gradient--tertiary">iShop</h1>
+      <h1>iShop</h1>
     </div>
     <div class="navbar__search--input">
       <input
         v-model="inputSearch"
         type="text"
-        placeholder="Search for a product (soon)"
+        placeholder="Search for a product"
+        @change="searchProduct"
       />
-      <div class="navbar__search--icon">
+      <div class="navbar__search--icon" @click="searchProduct">
         <mdicon name="magnify" size="30" />
       </div>
     </div>
@@ -44,7 +45,7 @@
           <mdicon name="close" size="30" />
         </div>
         <div class="navbar__expandMenu--title">
-          <h1 class="text__gradient--tertiary">iShop</h1>
+          <h1 class="text--white">iShop</h1>
         </div>
       </div>
       <div class="d-flex absolute__centered">
@@ -75,10 +76,15 @@ import { onMounted, ref } from "vue";
 import { listenScroll } from "../utils/scrollFX";
 import { useCartStore } from "../stores/cart";
 import { useUserStore } from "../stores/user";
+import { useProductStore } from "../stores/product";
 import { computed } from "@vue/reactivity";
+import { useRoute, useRouter } from "vue-router";
 
 const cartStore = useCartStore();
 const userStore = useUserStore();
+const shopStore = useProductStore();
+const router = useRouter();
+const route = useRoute();
 
 const links = [
   { text: "Home", href: "/home" },
@@ -88,10 +94,17 @@ const links = [
 
 let screenWidth = ref(window.innerWidth);
 let isUsingFullHDScreen = computed(() => screenWidth.value > 1500);
-
+let inputSearch = ref("");
 const toggleMobileMenu = () => {
   const menu = document.querySelector(".navbar__expandMenu--wrapper");
   menu.classList.toggle("expanded__menu");
+};
+
+const searchProduct = () => {
+  shopStore.searchQuery = inputSearch.value;
+  if (route.path !== "/shop") {
+    router.push("/shop");
+  }
 };
 
 onMounted(() => {
@@ -195,17 +208,15 @@ nav {
 }
 
 .navbar__links {
-  // background: #303030;
   color: #ffffff;
-  padding: clamp(5px, 10px, 5px);
+  padding: clamp(5px, 7.5px, 10px);
   padding-inline: 1.2rem;
   border-radius: 20px;
   text-decoration: none;
   margin-inline: 5px;
 }
 
-.exact-active,
-.active {
+.exact-active, .active {
   background: white;
   color: #151515;
 }

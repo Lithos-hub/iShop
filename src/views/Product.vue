@@ -1,4 +1,5 @@
 <template>
+<p class="text--black"><router-link to="/shop"> Shop</router-link> / <router-link :to="'/shop?category=' + product.category">{{product.category}}</router-link></p>
 <Spinner v-if="isLoading" />
   <section v-show="!isLoading" class="product">
     <article class="product__wrapper">
@@ -53,7 +54,7 @@
       </div>
     </article>
   </section>
-  <Snackbar v-if="cartStore.cartNotification.show" />
+  <Snackbar v-if="snackbarStore.show" />
 </template>
 
 <script setup>
@@ -62,11 +63,14 @@ import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import CardBadge from "../components/CardBadge.vue";
 import { useCartStore } from "../stores/cart";
+import { useSnackbarStore } from "../stores/snackbar";
 import Snackbar from "../components/Snackbar.vue";
 import Spinner from "../components/Spinner.vue";
 
 const route = useRoute();
 const cartStore = useCartStore();
+const snackbarStore = useSnackbarStore();
+
 const productId = route.params.id;
 let product = ref({});
 let rateNumber = ref("");
@@ -74,7 +78,7 @@ let rateCount = ref("");
 let showNavbar = ref(false);
 let isLoading = ref(true);
 let quantity = ref(1);
-watch(() => cartStore.cartNotification.show, (newVal) => {
+watch(() => snackbarStore.show, (newVal) => {
   if (newVal) {
     showNavbar = true;
   }
@@ -92,8 +96,8 @@ const getProductDetails = () => {
       } = response.data;
       rateNumber.value = rate;
       rateCount.value = count;
-      progressDiv.style.minWidth = `${(rate * 145) / 5}px`;
-      progressDiv.style.width = `${(rate * 145) / 5}px`;
+      progressDiv.style.minWidth = `${(rate * 147) / 5}px`;
+      progressDiv.style.width = `${(rate * 147) / 5}px`;
     });
 };
 
@@ -105,6 +109,7 @@ onMounted(() => getProductDetails());
 @import "../scss/variables";
 
 .product__wrapper {
+  position: relative;
   background: white;
   border-radius: 25px;
   padding: 25px;
