@@ -36,7 +36,7 @@ import Services from "../services/Services";
 const userStore = useUserStore();
 
 const mayor = ref(0);
-const minor = ref(7);
+const minor = ref(8);
 const patch = ref(0);
 const version = `V${mayor.value}.${minor.value}.${patch.value}`;
 
