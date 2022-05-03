@@ -8,7 +8,7 @@ export const listenScroll = () => {
   const expandedMenu = document.querySelector(".navbar__expandMenu--wrapper");
   if (document.documentElement.scrollTop > 150 || document.body.scrollTop > 150) {
     navbar.style.height = "48px";
-    navbar.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "5px";
+    navbar.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "8px";
     navbar.style.paddingInline = "10px";
     expandedMenu.style.height = "48px";
     expandedMenu.style.paddingBlock = window.innerWidth < 1920 ? "0px" : "5px";
@@ -20,7 +20,7 @@ export const listenScroll = () => {
       links.style.right = "2vh";
     }
     if (categoriesMenu) {
-      categoriesMenu.style.top = window.innerWidth < 1920 ? "7.5vh" : "5.5vh";
+      categoriesMenu.style.top = window.innerWidth < 1920 ? "6.8vh" : "5vh";
       categoriesMenu.style.background = "linear-gradient(120deg, #4cbaff, #6764ff, #9d00ff, #a04cff)";
       categoriesMenu.style.boxShadow = "0px 0px 10px #404040";
     }
