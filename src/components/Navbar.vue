@@ -45,7 +45,7 @@
           <mdicon name="close" :size="isUsingFullHDScreen ? 23 : 20" />
         </div>
         <div class="navbar__expandMenu--title">
-          <h1 class="text--white">iShop</h1>
+          <h1 class="white--text">iShop</h1>
         </div>
       </div>
       <div class="d-flex absolute__centered">

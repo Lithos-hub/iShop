@@ -1,52 +1,46 @@
 <template>
   <section class="shop">
-    <small class="text--black absolute__right"
-      >Time: {{ shopStore.timeResponse }}s</small
+    <small class="black--text absolute__right"
+      >Time: {{ productStore.timeResponse }}s</small
     >
-    <p class="time__warning" v-if="shopStore.timeResponse > 5">
-      The server response is taking a little while, please wait.
-    </p>
     <Spinner v-if="isLoading" />
-    <div v-else>
-      <h3 class="text--black shop__results">{{ products.length }} results</h3>
-      <div class="grid">
-        <div v-for="product in products">
-          <div class="col">
-            <ProductCard :product="product" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <ProductsList v-else :products="products" :component-key="componentKey" />
+    <Snackbar v-if="snackbarStore.show" />
   </section>
-  <Snackbar v-if="snackbarStore.show" />
 </template>
 
 <script setup>
-import { onMounted, computed, watch } from "vue";
-import Spinner from "../components/Spinner.vue";
+import { onMounted, computed, watch, defineAsyncComponent } from "vue";
 import Snackbar from "../components/Snackbar.vue";
-import ProductCard from "../components/ProductCard.vue";
+import Spinner from "../components/Spinner.vue";
 import { useProductStore } from "../stores/product";
 import { useRoute } from "vue-router";
 import { useSnackbarStore } from "../stores/snackbar";
 
-const shopStore = useProductStore();
+const ProductsList = defineAsyncComponent({
+  loader: () => import("../components/ProductsList.vue"),
+  delay: 200
+})
+
+const productStore = useProductStore();
 const route = useRoute();
 const snackbarStore = useSnackbarStore();
 
 const category = route.query.category;
 
-let isLoading = computed(() => shopStore.isLoading);
-let products = computed(() => shopStore.productsList);
-let searchInput = computed(() => shopStore.searchQuery);
+let isLoading = computed(() => productStore.isLoading);
+let products = computed(() => productStore.productsList);
+let searchInput = computed(() => productStore.searchQuery);
+let componentKey = computed(() => productStore.componentKey);
+
 let isSearchingByCategory = !!category;
 watch(
-  () => shopStore.searchQuery,
+  () => productStore.searchQuery,
   (newVal, oldVal) => {
     if (newVal === "") {
-      shopStore.getStoreProducts();
+      productStore.getStoreProducts();
     } else if (newVal !== oldVal) {
-      shopStore.filterProducts(false);
+      productStore.filterProducts(false);
     }
   }
 );
@@ -54,19 +48,19 @@ watch(
   () => route.params.category,
   (newVal) => {
     if (newVal) {
-      shopStore.getProductsByCategory(newVal);
+      productStore.getProductsByCategory(newVal);
     }
   }
 );
 
 onMounted(() => {
   if (category) {
-    shopStore.getProductsByCategory(category);
+    productStore.getProductsByCategory(category);
   } else if (searchInput && !isSearchingByCategory) {
-    shopStore.filterProducts(false);
-    shopStore.searchQuery = "";
+    productStore.filterProducts(false);
+    productStore.searchQuery = "";
   } else {
-    shopStore.getStoreProducts();
+    productStore.getStoreProducts();
   }
 });
 </script>

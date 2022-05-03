@@ -1,10 +1,10 @@
 <template>
-<p class="text--black"><router-link to="/shop"> Shop</router-link> / <router-link :to="'/shop?category=' + product.category">{{product.category}}</router-link></p>
+<p class="black--text"><router-link to="/shop"> Shop</router-link> / <router-link :to="'/shop?category=' + product.category">{{product.category}}</router-link></p>
 <Spinner v-if="isLoading" />
   <section v-show="!isLoading" class="product">
     <article class="product__wrapper">
       <header class="product__header">
-        <h1 class="text--black">{{ product.title }}</h1>
+        <h1 class="black--text">{{ product.title }}</h1>
         <div class="cart__item--category">
           <CardBadge
             class="card__badge"
@@ -42,7 +42,7 @@
           <p class="product__description">{{ product.description }}</p>
         </div>
         <div class="d-block absolute__right">
-          <h1 class="text--black text-center">{{ product.price }} €</h1>
+          <h1 class="black--text text-center">{{ product.price }} €</h1>
           <div class="d-block relative">
             <input placeholder="Quantity" class="input--quantity" v-model="quantity" />
             <button class="product__add--button" @click="cartStore.addProduct(product, quantity)">Add to the cart</button>
