@@ -83,11 +83,22 @@ watch(() => snackbarStore.show, (newVal) => {
     showNavbar = true;
   }
 });
+watch(() => route.params.id, (newVal) => {
+  if (newVal) {
+    getProductDetails(newVal);
+  }
+})
 
-const getProductDetails = () => {
+const getProductDetails = (queryParam) => {
   const progressDiv = document.querySelector(".rating__stars--progress");
+  let url = "";
+  if (queryParam) {
+    url = `https://fakestoreapi.com/products/${queryParam}`;
+  } else {
+    url = `https://fakestoreapi.com/products/${productId}`;
+  }
   axios
-    .get(`https://fakestoreapi.com/products/${productId}`)
+    .get(url)
     .then((response) => {
       isLoading.value = false;
       product.value = response.data;

@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-
 import { useSnackbarStore } from "./Snackbar";
 
 export const useCartStore = defineStore("useCart", {
@@ -8,11 +7,15 @@ export const useCartStore = defineStore("useCart", {
   }),
   getters: {
     getCartLength: (state) => state.items.length,
+    getCartSubtotal: (state) =>
+      Math.round(
+        state.items.reduce((a, b) => a + b.price * b.quantity, 0) * 100
+      ) / 100,
     getItems: (state) => state.items,
   },
   actions: {
     addProduct(product, quantity) {
-const snackbarStore = useSnackbarStore();
+      const snackbarStore = useSnackbarStore();
 
       if (!this.items.find((item) => item.id === product.id)) {
         this.items.push({ ...product, quantity });

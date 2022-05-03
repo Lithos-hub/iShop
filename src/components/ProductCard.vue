@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="goProductDetails(product.id)">
+  <div class="card">
     <CardBadge
       class="card__badge"
       :product="product"
@@ -22,7 +22,6 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import CardBadge from "./CardBadge.vue";
 
 const props = defineProps({
@@ -34,8 +33,7 @@ const props = defineProps({
 
 const { product } = props;
 
-const router = useRouter();
-const goProductDetails = (id) => router.push(`/product/${id}`);
+
 </script>
 
 <style lang="scss" scoped>

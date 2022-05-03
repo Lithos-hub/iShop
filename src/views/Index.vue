@@ -23,7 +23,7 @@ const changeText = (change) => {
   let secondText = document.querySelector("#second-text");
   if (change) {
     firstText.style.opacity = 0;
-      secondText.style.opacity = 1;
+    secondText.style.opacity = 1;
     setTimeout(() => {
       secondText.style.display = "block";
       firstText.style.display = "none";

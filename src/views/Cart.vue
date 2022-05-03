@@ -66,7 +66,7 @@
     </div>
     <div class="cart__summary">
       <h1>Order summary</h1>
-      <h2 class="cart__summary--subtotal">Subtotal: {{ computedSubtotal }}€</h2>
+      <h2 class="cart__summary--subtotal">Subtotal: {{ subtotal }}€</h2>
       <div class="coupon--wrapper">
         <input placeholder="XX000000" v-model="couponCode" maxlength="8" /><button @click="checkCoupon()">Apply coupon</button>
       </div>
@@ -81,7 +81,7 @@
 
 <script setup>
 import { useCartStore } from "../stores/cart";
-import { onMounted, ref, computed } from "vue";
+import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import CardBadge from "../components/CardBadge.vue";
 
@@ -89,7 +89,7 @@ const cartStore = useCartStore();
 
 let productsChecked = ref([]);
 const { items } = storeToRefs(cartStore);
-const computedSubtotal = computed(() => Math.round(items.value.reduce((a, b) => a + b.price * b.quantity, 0) * 100) / 100);
+const subtotal = computed(() => cartStore.getCartSubtotal);
 let couponCode = ref('');
 let correctCoupon = ref(false);
 let couponChecked = ref(false);

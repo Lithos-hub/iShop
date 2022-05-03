@@ -5,7 +5,6 @@ import {
   getFirestore,
   collection,
   addDoc,
-  getDocs,
   doc,
   updateDoc,
 } from "firebase/firestore";
@@ -38,7 +37,6 @@ export {
   collection,
   addDoc,
   onAuthStateChanged,
-  getDocs,
   doc,
   updateDoc,
 };

@@ -13,7 +13,7 @@
 import { onMounted, computed, watch, defineAsyncComponent } from "vue";
 import Snackbar from "../components/Snackbar.vue";
 import Spinner from "../components/Spinner.vue";
-import { useProductStore } from "../stores/product";
+import { useProductStore } from "../stores/Product";
 import { useRoute } from "vue-router";
 import { useSnackbarStore } from "../stores/snackbar";
 

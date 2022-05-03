@@ -13,14 +13,13 @@
 
 <script setup>
 import { onMounted, computed } from "vue";
-import { useProductStore } from "../stores/product";
-import { useRoute, useRouter } from "vue-router";
+import { useProductStore } from "../stores/Product";
+import { useRouter } from "vue-router";
 
-const shopStore = useProductStore();
+const productStore = useProductStore();
 const router = useRouter();
-const route = useRoute();
 
-let categories = computed(() => shopStore.categoriesList);
+let categories = computed(() => productStore.categoriesList);
 
 const categoryColor = (category) => {
   const badgeClasses = {
@@ -33,12 +32,12 @@ const categoryColor = (category) => {
 };
 
 const searchByCategory = (category) => {
-  shopStore.getProductsByCategory(category)
+  productStore.getProductsByCategory(category)
   router.push(`/shop?category=${category}`);
 };
 
 onMounted(() => {
-  shopStore.getCategories();
+  productStore.getCategories();
 });
 </script>
 
