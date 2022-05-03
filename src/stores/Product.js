@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import { useSnackbarStore } from "./Snackbar";
 import axios from "axios";
+import router from "../router";
 
-const useProductStore = defineStore("useProduct", {
+export const useProductStore = defineStore("useProduct", {
   state: () => ({
     isLoading: true,
     componentKey: 0,
@@ -75,7 +76,8 @@ const useProductStore = defineStore("useProduct", {
     async getProductsByCategory(category) {
       this.getStoreProducts(true, category, true);
     },
+    goProductDetails(id) {
+      router.push(`/product/${id}`);
+    },
   },
 });
-
-export { useProductStore };

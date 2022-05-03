@@ -4,7 +4,7 @@
     <div class="grid">
       <div v-for="product in products">
         <div class="col">
-          <ProductCard :key="componentKey" :product="product" />
+          <ProductCard :key="componentKey" :product="product" @click="goProductDetails(product.id)" />
         </div>
       </div>
     </div>
@@ -13,6 +13,7 @@
 
 <script setup>
 import { defineAsyncComponent } from "vue";
+import { useProductStore } from "../stores/Product";
 import ErrorComponent from "./ErrorComponent.vue";
 
 const ProductCard = defineAsyncComponent({
@@ -31,7 +32,13 @@ const props = defineProps({
   },
 });
 
-const { products, loading } = props;
+const productStore = useProductStore();
+
+const goProductDetails = (id) => {
+  productStore.goProductDetails(id);
+};
+
+const { products } = props;
 </script>
 
 <style lang="scss" scoped>

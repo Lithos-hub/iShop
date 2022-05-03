@@ -4,12 +4,11 @@ import {
   db,
   collection,
   addDoc,
-  getDocs,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "../firebase.config";
 
 import { useUserStore } from "../stores/user";
-import router from '../router'
+import router from "../router";
 
 class Services {
   constructor() {
@@ -23,11 +22,20 @@ class Services {
       const unsuscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
           userStore.user = user;
+          this.pushUserToFirestore(user);
           resolve(user);
+        } else {
+          reject("Error when trying to get the user");
         }
       });
       unsuscribe();
-    })
+    });
+  }
+
+  async pushUserToFirestore(user) {
+    const docRef = addDoc(collection(db, "users"), {
+      uid: user.uid,
+    });
   }
 
   async signAsAnon() {
@@ -37,30 +45,11 @@ class Services {
     await signAnon(auth)
       .then(async () => {
         response = "OK";
-        console.log('Logged in');
-        router.push('/home')
-        let usersArr = []
-        // If OK, then we get all users uid from Firestore
-        const querySnapshot = await getDocs(collection(db, "users"));
-        querySnapshot.forEach((doc) => {
-          const DATA = doc.data();
-          const USER_UID = DATA.uid;
-          usersArr.push(USER_UID)
+        console.log("Logged in");
+        router.push("/home");
+        const docRef = addDoc(collection(db, "users"), {
+          uid: auth.currentUser.uid,
         });
-
-        const CURRENT_UID = auth.currentUser.uid;
-        const USER_EXISTS = usersArr.includes(CURRENT_UID);
-
-        // If the user is not in the database, then we add him
-        if (!USER_EXISTS) {
-          try {
-            const docRef = addDoc(collection(db, "users"), {
-              uid: auth.currentUser.uid
-            });
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
-        }
       })
       .catch((error) => {
         response = "Error: " + error;
@@ -70,12 +59,12 @@ class Services {
   }
 
   async logout() {
-    await auth.signOut()
-    .then(() => {
-      console.log('Logged out')
-      router.push('/');
+    const userStore = useUserStore();
+    await auth.signOut().then(() => {
+      console.log("Logged out");
+      router.push("/");
       userStore.user = null;
-    })
+    });
   }
 }
 

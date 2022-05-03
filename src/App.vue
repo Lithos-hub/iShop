@@ -15,13 +15,17 @@ import Navbar from "./components/Navbar.vue";
 import Header from "./components/Header.vue";
 import { listenScroll } from "./utils/scrollFX";
 import { useRoute } from 'vue-router';
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
+import { useUserStore } from "./stores/user";
 
 const route = useRoute()
+const userStore = useUserStore()
 
 watch(() => route.path, (newPath) => {
   newPath === '/shop' ? window.onscroll = () => listenScroll() : window.onscroll = null
 })
+
+onMounted(() => userStore.currentUser());
 
 </script>
 

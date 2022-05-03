@@ -12,10 +12,14 @@
         @change="searchProduct"
       />
       <div class="navbar__search--icon" @click="searchProduct">
-        <mdicon id="search__icon" name="magnify" :size="isUsingFullHDScreen ? 23 : 20" />
+        <mdicon
+          id="search__icon"
+          name="magnify"
+          :size="isUsingFullHDScreen ? 23 : 20"
+        />
       </div>
     </div>
-    <div v-if="isUsingFullHDScreen" class="navbar__links--wrapper">
+    <div v-show="isUsingFullHDScreen" class="navbar__links--wrapper">
       <div v-for="link in links">
         <router-link
           class="navbar__links reflections"
@@ -25,6 +29,7 @@
         >
       </div>
       <button
+        id="cart__button--contracted"
         class="navbar__btn cart__button"
         @click="router.push('/cart')"
       >
@@ -35,56 +40,93 @@
         <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 23 : 20" />
       </button>
     </div>
-    <div v-else class="navbar__menuIcon--wrapper" @click="toggleMobileMenu">
+    <div v-show="!isUsingFullHDScreen" class="navbar__menuIcon--wrapper" @click="toggleMobileMenu">
       <mdicon name="menu" :size="isUsingFullHDScreen ? 23 : 20" />
     </div>
   </nav>
-    <nav class="navbar__expandMenu--wrapper">
-      <div class="grid">
-        <div class="navbar__expandMenu--closeBtn" @click="toggleMobileMenu">
-          <mdicon name="close" :size="isUsingFullHDScreen ? 23 : 20" />
-        </div>
-        <div class="navbar__expandMenu--title">
-          <h1 class="white--text">iShop</h1>
-        </div>
+  <nav class="navbar__expandMenu--wrapper">
+    <div class="grid">
+      <div class="navbar__expandMenu--closeBtn" @click="toggleMobileMenu">
+        <mdicon name="close" :size="isUsingFullHDScreen ? 23 : 20" />
       </div>
-      <div class="d-flex absolute__centered">
-        <div v-for="link in links">
-          <router-link
-            class="navbar__links reflections"
-            router-link-exact-active
-            :to="link.href"
-            >{{ link.text }}</router-link
-          >
-        </div>
-        <button
-          class="navbar__btn cart__button"
-          @click="router.push('/cart')"
+      <div class="navbar__expandMenu--title">
+        <h1 class="white--text">iShop</h1>
+      </div>
+    </div>
+    <div class="d-flex absolute__centered">
+      <div v-for="link in links">
+        <router-link
+          class="navbar__links reflections"
+          router-link-exact-active
+          :to="link.href"
+          >{{ link.text }}</router-link
         >
-          <div class="cart__button--badge">{{ cartStore.getCartLength }}</div>
-          <mdicon name="cart" :size="isUsingFullHDScreen ? 23 : 20" />
-        </button>
-        <button class="navbar__btn account__button" @click="userStore.logout()">
-          <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 23 : 20" />
-        </button>
       </div>
-    </nav>
+      <button
+        id="cartButton__expanded"
+        class="navbar__btn cart__button"
+        @click="router.push('/cart')"
+      >
+        <div class="cart__button--badge">{{ cartStore.getCartLength }}</div>
+        <mdicon name="cart" :size="isUsingFullHDScreen ? 23 : 20" />
+      </button>
+      <button class="navbar__btn account__button" @click="userStore.logout()">
+        <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 23 : 20" />
+      </button>
+    </div>
+  </nav>
+  <FloatCart
+    v-if="showingFloatCart"
+    @mouseleave="showingFloatCart = false"
+    :client-y="clientY"
+    :client-x="clientX"
+  />
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { listenScroll } from "../utils/scrollFX";
 import { useCartStore } from "../stores/cart";
 import { useUserStore } from "../stores/user";
-import { useProductStore } from "../stores/product";
-import { computed } from "@vue/reactivity";
+import { useProductStore } from "../stores/Product";
 import { useRoute, useRouter } from "vue-router";
+import FloatCart from "./FloatCart.vue";
 
 const cartStore = useCartStore();
 const userStore = useUserStore();
-const shopStore = useProductStore();
+const productStore = useProductStore();
 const router = useRouter();
 const route = useRoute();
+let clientY = ref(0);
+let clientX = ref(0);
+let showingFloatCart = ref(false);
+
+const getClientCoords = () => {
+  const cartButtonContracted = document.querySelector(
+    "#cart__button--contracted"
+  );
+  const cartButtonExpanded = document.querySelector("#cartButton__expanded");
+  if (cartButtonContracted) {
+    cartButtonContracted.addEventListener("mouseover", (e) => {
+      clientY.value = e.clientY;
+      clientX.value = e.clientX - 200;
+
+      setTimeout(() => {
+        showingFloatCart.value = true;
+      }, 250);
+    });
+  }
+  if (cartButtonExpanded) {
+    cartButtonExpanded.addEventListener("mouseover", (e) => {
+      clientY.value = e.clientY;
+      clientX.value = e.clientX;
+
+      setTimeout(() => {
+        showingFloatCart.value = true;
+      }, 250);
+    });
+  }
+};
 
 const links = [
   { text: "Home", href: "/home" },
@@ -101,13 +143,14 @@ const toggleMobileMenu = () => {
 };
 
 const searchProduct = () => {
-  shopStore.searchQuery = inputSearch.value;
+  productStore.searchQuery = inputSearch.value;
   if (route.path !== "/shop") {
     router.push("/shop");
   }
 };
 
 onMounted(() => {
+  getClientCoords();
   listenScroll();
   window.addEventListener(
     "resize",
@@ -226,7 +269,8 @@ nav {
   margin-inline: 5px;
 }
 
-.exact-active, .active {
+.exact-active,
+.active {
   background: white;
   color: #151515;
 }
