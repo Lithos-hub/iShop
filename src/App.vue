@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="sticky" v-if="this.$route.path !== '/'">
+    <div class="sticky" v-if="route.path !== '/'">
       <Navbar />
     </div>
-      <Header id="shop__categoriesMenu" v-if="this.$route.path === '/shop'" /> 
+      <Header id="shop__categoriesMenu" v-if="route.path === '/shop'" /> 
     <div class="main-container">
       <router-view />
     </div>
@@ -46,6 +46,7 @@ watch(() => route.path, (newPath) => {
   position: sticky;
   z-index: 99;
   height: 40px;
+  top: 0;
   left: 0;
   width: 100%;
 }

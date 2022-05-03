@@ -12,7 +12,7 @@
         @change="searchProduct"
       />
       <div class="navbar__search--icon" @click="searchProduct">
-        <mdicon name="magnify" size="30" />
+        <mdicon id="search__icon" name="magnify" :size="isUsingFullHDScreen ? 23 : 20" />
       </div>
     </div>
     <div v-if="isUsingFullHDScreen" class="navbar__links--wrapper">
@@ -26,23 +26,23 @@
       </div>
       <button
         class="navbar__btn cart__button"
-        @click="this.$router.push('/cart')"
+        @click="router.push('/cart')"
       >
         <div class="cart__button--badge">{{ cartStore.getCartLength }}</div>
-        <mdicon name="cart" size="30" />
+        <mdicon name="cart" :size="isUsingFullHDScreen ? 23 : 20" />
       </button>
       <button class="navbar__btn account__button" @click="userStore.logout()">
-        <mdicon name="account-cancel" size="30" />
+        <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 23 : 20" />
       </button>
     </div>
     <div v-else class="navbar__menuIcon--wrapper" @click="toggleMobileMenu">
-      <mdicon name="menu" size="30" />
+      <mdicon name="menu" :size="isUsingFullHDScreen ? 23 : 20" />
     </div>
   </nav>
     <nav class="navbar__expandMenu--wrapper">
       <div class="grid">
         <div class="navbar__expandMenu--closeBtn" @click="toggleMobileMenu">
-          <mdicon name="close" size="30" />
+          <mdicon name="close" :size="isUsingFullHDScreen ? 23 : 20" />
         </div>
         <div class="navbar__expandMenu--title">
           <h1 class="text--white">iShop</h1>
@@ -59,13 +59,13 @@
         </div>
         <button
           class="navbar__btn cart__button"
-          @click="this.$router.push('/cart')"
+          @click="router.push('/cart')"
         >
           <div class="cart__button--badge">{{ cartStore.getCartLength }}</div>
-          <mdicon name="cart" :size="isUsingFullHDScreen ? 30 : 22" />
+          <mdicon name="cart" :size="isUsingFullHDScreen ? 23 : 20" />
         </button>
         <button class="navbar__btn account__button" @click="userStore.logout()">
-          <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 30 : 22" />
+          <mdicon name="account-cancel" :size="isUsingFullHDScreen ? 23 : 20" />
         </button>
       </div>
     </nav>
@@ -184,6 +184,9 @@ nav {
 }
 
 .navbar__search--icon {
+  position: relative;
+  width: 50px;
+  margin-right: 20px;
   cursor: pointer;
   height: clamp(15px, 30px, 35px);
   background: #202020;
@@ -194,6 +197,13 @@ nav {
 
   &:hover {
     color: $textPrimary;
+  }
+
+  #search__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
