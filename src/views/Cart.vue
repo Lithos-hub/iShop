@@ -2,7 +2,7 @@
   <section class="cart">
     <div class="cart__list">
       <header class="cart__header">
-        <h2 class="text--black">
+        <h2 class="black--text">
           Shopping cart <small>({{ items.length }} items)</small>
         </h2>
         <button v-if="productsChecked.length" @click="removeMultiple">Remove selected</button>

@@ -5,26 +5,25 @@ import axios from "axios";
 const useProductStore = defineStore("useProduct", {
   state: () => ({
     isLoading: true,
+    componentKey: 0,
     timeResponse: 0, // => time to get response from server
     productsList: [],
     categoriesList: [],
     searchQuery: "",
-    isSearchingByCategory: false,
   }),
   actions: {
     async getCategories() {
       if (!this.categoriesList.length) {
-        try {
-          await axios
-            .get("https://fakestoreapi.com/products/categories")
-            .then((res) => {
-              this.categoriesList = res.data;
-            });
-        } catch (err) {
-          console.log("Error when getting categories: ", err);
-        } finally {
-          this.isLoading = false;
-        }
+        await axios
+          .get("https://fakestoreapi.com/products/categories")
+          .then((res) => {
+            this.componentKey++;
+            this.categoriesList = res.data;
+          })
+          .catch((err) => {
+            this.componentKey++;
+            console.log("Error when getting categories: ", err);
+          });
       } else {
         return;
       }
@@ -45,6 +44,7 @@ const useProductStore = defineStore("useProduct", {
         await axios
           .get("https://fakestoreapi.com/products")
           .then((res) => {
+            this.componentKey++;
             if (isFiltering && query && !isByCategory) {
               this.productsList = res.data.filter((product) =>
                 product.title.toLowerCase().includes(query.toLowerCase())
@@ -57,12 +57,12 @@ const useProductStore = defineStore("useProduct", {
               this.productsList = res.data;
             }
             responseThen = new Date(Date.now());
+            this.isLoading = false;
             this.timeResponse =
               (responseThen.getTime() - responseNow.getTime()) / 1000;
-            this.isSearchingByCategory = false;
-            this.isLoading = false;
           })
           .catch((err) => {
+            this.componentKey++;
             snackbarStore.showSnackbar("error", err.message);
           });
       } else {

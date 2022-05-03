@@ -4,17 +4,17 @@
     <div class="techIcon__row">
       <div class="techIcon__wrapper">
         <img class="vue__image" src="../assets/img/vue.png" width="80" height="80" />
-        <p class="text--vue">Vue 3</p>
+        <p class="vue--text">Vue 3</p>
       </div>
       <h1 class="text__gradient--primary">+</h1>
       <div class="techIcon__wrapper">
         <img class="vite__image" src="../assets/img/vite.svg" width="80" height="80" />
-        <p class="text--vite">Vite</p>
+        <p class="vite--text">Vite</p>
       </div>
       <h1 class="text__gradient--primary">+</h1>
       <div class="techIcon__wrapper">
         <img class="pinia__image" src="../assets/img/pinia.svg" width="80" height="80" />
-        <p class="text--pinia">Pinia</p>
+        <p class="pinia--text">Pinia</p>
       </div>
     </div>
   </section>
