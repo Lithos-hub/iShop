@@ -32,7 +32,7 @@
 import { ref } from "vue";
 
 const mayor = ref(0);
-const minor = ref(6);
+const minor = ref(7);
 const patch = ref(0);
 const version = `V${mayor.value}.${minor.value}.${patch.value}`;
 
