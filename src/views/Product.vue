@@ -58,12 +58,15 @@
 </template>
 
 <script setup>
+// VUEX & UTILS
+import { useCartStore } from "../stores/Cart";
+import { useSnackbarStore } from "../stores/snackbar";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+
+// COMPONENTS
 import CardBadge from "../components/CardBadge.vue";
-import { useCartStore } from "../stores/cart";
-import { useSnackbarStore } from "../stores/snackbar";
 import Snackbar from "../components/Snackbar.vue";
 import Spinner from "../components/Spinner.vue";
 

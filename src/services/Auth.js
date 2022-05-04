@@ -3,14 +3,15 @@ import {
   signAnon,
   db,
   collection,
-  addDoc,
+  doc,
+  setDoc,
   onAuthStateChanged,
 } from "../firebase.config";
 
-import { useUserStore } from "../stores/user";
+import { useUserStore } from "../stores/User";
 import router from "../router";
 
-class Services {
+class Auth {
   constructor() {
     this.auth = auth;
     this.user = null;
@@ -18,38 +19,27 @@ class Services {
 
   getCurrentUser() {
     const userStore = useUserStore();
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const unsuscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          userStore.user = user;
-          this.pushUserToFirestore(user);
-          resolve(user);
-        } else {
-          reject("Error when trying to get the user");
-        }
+        userStore.user = user;
+        resolve(user);
       });
       unsuscribe();
     });
   }
 
-  async pushUserToFirestore(user) {
-    const docRef = addDoc(collection(db, "users"), {
-      uid: user.uid,
-    });
-  }
-
   async signAsAnon() {
-    // Here we'll control if the user signs up for the first time //
-    // First, the user signs in anonymously
     let response = null;
     await signAnon(auth)
-      .then(async () => {
+      .then(() => {
+        const docRef = doc(collection(db, "users"));
+        setDoc(docRef, {
+          docId: docRef.id,
+        });
+        localStorage.setItem("docId", docRef.id);
         response = "OK";
         console.log("Logged in");
         router.push("/home");
-        const docRef = addDoc(collection(db, "users"), {
-          uid: auth.currentUser.uid,
-        });
       })
       .catch((error) => {
         response = "Error: " + error;
@@ -68,4 +58,4 @@ class Services {
   }
 }
 
-export default new Services();
+export default new Auth();

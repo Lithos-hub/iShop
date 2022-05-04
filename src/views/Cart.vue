@@ -5,7 +5,9 @@
         <h2 class="black--text">
           Shopping cart <small>({{ items.length }} items)</small>
         </h2>
-        <button v-if="productsChecked.length" @click="removeMultiple">Remove selected</button>
+        <button v-if="productsChecked.length" @click="removeMultiple">
+          Remove selected
+        </button>
       </header>
       <ul>
         <li class="cart__item--wrapper" v-for="product in items">
@@ -40,7 +42,7 @@
             <div class="cart__item--quantityWrapper">
               <div
                 class="cart__item--quantityButton remove"
-                @click="removeSingle(product)"
+                @click="deleteSingleCartProduct(product)"
               >
                 <mdicon name="close-circle" />
               </div>
@@ -68,29 +70,43 @@
       <h1>Order summary</h1>
       <h2 class="cart__summary--subtotal">Subtotal: {{ subtotal }}€</h2>
       <div class="coupon--wrapper">
-        <input placeholder="XX000000" v-model="couponCode" maxlength="8" /><button @click="checkCoupon()">Apply coupon</button>
+        <input
+          placeholder="XX000000"
+          v-model="couponCode"
+          maxlength="8"
+        /><button @click="checkCoupon()">Apply coupon</button>
       </div>
-      <small class="danger--text" v-if="!correctCoupon && couponChecked">Incorrect coupon format!</small>
-      <small class="success--text" v-if="correctCoupon && couponChecked">Coupon applied!</small>
-      <button class="cart__summary--checkoutButton">
-        Checkout {{ items.length > 1 ? "products" : "product" }}
-      </button>
+      <small class="danger--text" v-if="!correctCoupon && couponChecked"
+        >Incorrect coupon format!</small
+      >
+      <small class="success--text" v-if="correctCoupon && couponChecked"
+        >Coupon applied!</small
+      >
+      <router-link to="/checkout" class="text-none">
+        <button class="cart__summary--checkoutButton">
+          Checkout {{ items.length > 1 ? "products" : "product" }}
+        </button>
+      </router-link>
     </div>
   </section>
 </template>
 
 <script setup>
-import { useCartStore } from "../stores/cart";
-import { ref, computed } from "vue";
+// VUEX & UTILS
+import { useCartStore } from "../stores/Cart";
 import { storeToRefs } from "pinia";
+import { ref, computed } from "vue";
+
+// COMPONENTS
 import CardBadge from "../components/CardBadge.vue";
 
 const cartStore = useCartStore();
 
-let productsChecked = ref([]);
 const { items } = storeToRefs(cartStore);
 const subtotal = computed(() => cartStore.getCartSubtotal);
-let couponCode = ref('');
+
+let productsChecked = ref([]);
+let couponCode = ref("");
 let correctCoupon = ref(false);
 let couponChecked = ref(false);
 
@@ -106,11 +122,16 @@ const toggleProduct = (product) => {
 };
 
 const increment = (product) => product.quantity++;
-const decrease = (product) => product.quantity > 1 ? product.quantity-- : null;
-const removeSingle = (product) => cartStore.removeSingle(product);
-const removeMultiple = () => productsChecked.value.forEach(prod => cartStore.removeSingle(prod), productsChecked.value = []);
+const decrease = (product) =>
+  product.quantity > 1 ? product.quantity-- : null;
+const deleteSingleCartProduct = (product) => cartStore.deleteSingleCartProduct(product);
+const removeMultiple = () =>
+  productsChecked.value.forEach(
+    (prod) => cartStore.deleteSingleCartProduct(prod),
+    (productsChecked.value = [])
+  );
 const checkCoupon = () => {
-  let test = /[A-Z]{2}\d{6}/.test(couponCode.value)
+  let test = /[A-Z]{2}\d{6}/.test(couponCode.value);
   if (test) {
     correctCoupon.value = true;
     couponChecked.value = true;
@@ -118,7 +139,7 @@ const checkCoupon = () => {
     correctCoupon.value = false;
     couponChecked.value = true;
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -169,7 +190,7 @@ const checkCoupon = () => {
 
   button {
     cursor: pointer;
-    transition: all .3s ease-out;
+    transition: all 0.3s ease-out;
     border-radius: 10px;
     border: none;
     background: $textDanger;
@@ -320,7 +341,7 @@ const checkCoupon = () => {
   }
 
   button {
-    transition: all .3s ease-out;
+    transition: all 0.3s ease-out;
     cursor: pointer;
     padding: 5px;
     border: none;

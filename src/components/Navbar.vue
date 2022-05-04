@@ -78,6 +78,7 @@
   <FloatCart
     v-if="showingFloatCart"
     @mouseleave="showingFloatCart = false"
+    @close="showingFloatCart = false"
     :client-y="clientY"
     :client-x="clientX"
   />
@@ -86,8 +87,8 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { listenScroll } from "../utils/scrollFX";
-import { useCartStore } from "../stores/cart";
-import { useUserStore } from "../stores/user";
+import { useCartStore } from "../stores/Cart";
+import { useUserStore } from "../stores/User";
 import { useProductStore } from "../stores/Product";
 import { useRoute, useRouter } from "vue-router";
 import FloatCart from "./FloatCart.vue";

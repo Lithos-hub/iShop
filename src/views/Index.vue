@@ -12,8 +12,10 @@
 </template>
 
 <script setup>
+// VUEX & UTILS
+import { useUserStore } from "../stores/User";
 import { ref } from "vue";
-import { useUserStore } from "../stores/user";
+
 const userStore = useUserStore();
 
 let text = ref("Enter");

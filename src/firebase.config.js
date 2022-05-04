@@ -7,6 +7,9 @@ import {
   addDoc,
   doc,
   updateDoc,
+  setDoc,
+  arrayUnion,
+  arrayRemove
 } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,4 +42,7 @@ export {
   onAuthStateChanged,
   doc,
   updateDoc,
+  setDoc,
+  arrayUnion,
+  arrayRemove
 };

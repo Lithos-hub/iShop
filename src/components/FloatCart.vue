@@ -1,15 +1,22 @@
 <template>
   <div
-    class="floatCart__wrapper"
+    class="floatCart__wrapper fadeIn"
     :style="`top: ${clientY}px; left: ${clientX}px`"
   >
     <div class="floatCart">
       <header class="floatCart__title">
         <h2>Shopping cart</h2>
+        <button class="floatCart__closeButton">
+          <mdicon name="close" @click="close" />
+        </button>
       </header>
       <section class="floatCart__body">
         <ul>
-          <li class="d-flex" v-for="product in items" @click="goProductDetails(product.id)">
+          <li
+            class="d-flex"
+            v-for="product in items"
+            @click="goProductDetails(product.id)"
+          >
             <img :src="product.image" :alt="'cart item: ' + product.title" />
             <span class="floatCart__productDesc">{{ product.title }}</span>
             <span class="ml-1">{{ product.price }}€</span>
@@ -17,24 +24,28 @@
           </li>
         </ul>
       </section>
+      <p class="absolute__centered" v-if="!items.length">
+        There are not products in your shopping cart yet.
+      </p>
       <footer class="floatCart__footer">
         <h5>Subtotal: {{ subtotal }}€</h5>
-        <button class="floatCart__checkoutBtn">
-            Checkout
-        </button>
+        <button class="floatCart__checkoutBtn" v-if="items.length">Checkout</button>
       </footer>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useCartStore } from "../stores/cart";
+// VUEX & UTILS
+import { useCartStore } from "../stores/Cart";
 import { useProductStore } from "../stores/product";
+import { computed } from "vue";
+
 const productStore = useProductStore();
 const cartStore = useCartStore();
 const items = computed(() => cartStore.items);
 const subtotal = computed(() => cartStore.getCartSubtotal);
+const emits = defineEmits(["close"]);
 const props = defineProps({
   clientY: {
     type: Number,
@@ -52,7 +63,7 @@ const { clientY, clientX } = props;
 const goProductDetails = (id) => {
   productStore.goProductDetails(id);
 };
-
+const close = () => emits("close");
 </script>
 
 <style lang="scss" scoped>
@@ -76,6 +87,8 @@ const goProductDetails = (id) => {
 
 .floatCart__title {
   position: absolute;
+  display: flex;
+  justify-content: space-between;
   top: 0;
   left: 0;
   width: 100%;
@@ -86,6 +99,22 @@ const goProductDetails = (id) => {
 
   h2 {
     margin-left: 20px;
+  }
+
+  .floatCart__closeButton {
+    transition: all .3s ease-out;
+    margin-block: auto;
+    margin-right: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px;
+    border: none;
+    background: none;
+    color: white;
+
+    &:hover {
+      background: #ffffff43;
+    }
   }
 }
 
@@ -103,7 +132,7 @@ ul {
 }
 
 li {
-  transition: all .3s ease-out;
+  transition: all 0.3s ease-out;
   display: flex;
   width: 90%;
   justify-content: flex-start;
@@ -125,9 +154,9 @@ img {
 }
 
 .floatCart__productDesc {
-    font-size: 12px;
-    padding: 0 auto;
-    margin-inline: 10px;
+  font-size: 12px;
+  padding: 0 auto;
+  margin-inline: 10px;
 }
 
 .floatCart__footer {
@@ -148,19 +177,19 @@ img {
 }
 
 .floatCart__checkoutBtn {
-    transition: all .3s ease-out;
-    cursor: pointer;
-    background: $gradientPrimary;
-    border: none;
-    border-radius: 10px;
-    margin-right: 25px;
-    padding-inline: 10px;
-    color: white;
-    height: 30px;
-    margin-block: auto;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  background: $gradientPrimary;
+  border: none;
+  border-radius: 10px;
+  margin-right: 25px;
+  padding-inline: 10px;
+  color: white;
+  height: 30px;
+  margin-block: auto;
 
-    &:hover {
-        transform: scale(1.1);
-    }
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 </style>
