@@ -53,7 +53,7 @@
         <h1 class="white--text">iShop</h1>
       </div>
     </div>
-    <div class="d-flex absolute__centered">
+    <div class="d-flex center absolute__centered">
       <div v-for="link in links">
         <router-link
           class="navbar__links reflections"

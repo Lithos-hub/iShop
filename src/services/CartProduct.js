@@ -1,22 +1,22 @@
 import { getDoc } from "firebase/firestore";
 import {
     db,
-    collection,
     updateDoc,
     doc,
-    setDoc,
     arrayUnion, 
     arrayRemove
   } from "../firebase.config";
+import { useUserStore } from '../stores/User'
 
 class CartProduct {
-    constructor() {
-        this.docId = localStorage.getItem("docId");
-    }
-
     addCartProduct(product) {
+        const userStore = useUserStore();
+        const {
+            user: { uid },
+        } = userStore;
+
         return new Promise((resolve) => {
-            const docRef = doc(db, "users", this.docId)
+            const docRef = doc(db, "users", uid)
             const response = updateDoc(docRef, {
                 'cart': arrayUnion(product)
             });
@@ -25,8 +25,13 @@ class CartProduct {
     }
 
     getCartProducts() {
+        const userStore = useUserStore();
+        const {
+            user: { uid },
+        } = userStore;
+
         return new Promise(async (resolve) => {
-            const docRef = doc(db, "users", this.docId)
+            const docRef = doc(db, "users", uid)
             const response = await getDoc(docRef);
             if (response.exists()) {
                 resolve(response.data().cart);
@@ -41,8 +46,13 @@ class CartProduct {
     }
 
     deleteSingleCartProduct(product) {
+        const userStore = useUserStore();
+        const {
+            user: { uid },
+        } = userStore;
+
         return new Promise((resolve) => {
-            const docRef = doc(db, "users", this.docId)
+            const docRef = doc(db, "users", uid)
             const response = updateDoc(docRef, {
                 'cart': arrayRemove(product)
             });

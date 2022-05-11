@@ -68,7 +68,7 @@
     </div>
     <div class="cart__summary">
       <h1>Order summary</h1>
-      <h2 class="cart__summary--subtotal">Subtotal: {{ subtotal }}€</h2>
+      <h3 class="cart__summary--subtotal">Subtotal: <span :class="isDisccounted ? 'disccounted danger--text' : ''">{{ subtotal }}€</span> <span class="success--text" v-if="isDisccounted">{{ subtotalDisccounted }}€ </span></h3>
       <div class="coupon--wrapper">
         <input
           placeholder="XX000000"
@@ -80,10 +80,10 @@
         >Incorrect coupon format!</small
       >
       <small class="success--text" v-if="correctCoupon && couponChecked"
-        >Coupon applied!</small
+        >Coupon -15% applied!</small
       >
       <router-link to="/checkout" class="text-none">
-        <button class="cart__summary--checkoutButton">
+        <button class="checkoutButton">
           Checkout {{ items.length > 1 ? "products" : "product" }}
         </button>
       </router-link>
@@ -104,11 +104,13 @@ const cartStore = useCartStore();
 
 const { items } = storeToRefs(cartStore);
 const subtotal = computed(() => cartStore.getCartSubtotal);
+const subtotalDisccounted = computed(() => cartStore.getCartDisccounted);
 
 let productsChecked = ref([]);
 let couponCode = ref("");
 let correctCoupon = ref(false);
 let couponChecked = ref(false);
+let isDisccounted = ref(false);
 
 const toggleProduct = (product) => {
   let match = productsChecked.value.find((prod) => prod === product);
@@ -124,17 +126,26 @@ const toggleProduct = (product) => {
 const increment = (product) => product.quantity++;
 const decrease = (product) =>
   product.quantity > 1 ? product.quantity-- : null;
-const deleteSingleCartProduct = (product) => cartStore.deleteSingleCartProduct(product);
+const deleteSingleCartProduct = (product) =>
+  cartStore.deleteSingleCartProduct(product);
 const removeMultiple = () =>
   productsChecked.value.forEach(
     (prod) => cartStore.deleteSingleCartProduct(prod),
     (productsChecked.value = [])
   );
 const checkCoupon = () => {
+  isDisccounted.value = true
   let test = /[A-Z]{2}\d{6}/.test(couponCode.value);
   if (test) {
     correctCoupon.value = true;
     couponChecked.value = true;
+    const discountedProducts = items.value.map((product) => {
+      return {
+        ...product,
+        price: parseInt(product.price) - (parseInt(product.price) * 0.15),
+      };
+    });
+    cartStore.mapDisccountedProducts(discountedProducts);
   } else {
     correctCoupon.value = false;
     couponChecked.value = true;
@@ -200,7 +211,7 @@ const checkCoupon = () => {
     padding-inline: 20px;
 
     &:hover {
-      background: #962e2e;
+      background: #302e96;
     }
   }
 }
@@ -302,27 +313,6 @@ const checkCoupon = () => {
   color: black;
 }
 
-.cart__summary--checkoutButton {
-  cursor: pointer;
-  position: absolute;
-  bottom: 0%;
-  left: 50%;
-  width: 90%;
-  transform: translate(-50%, -50%);
-  transition: all 0.3s ease-out;
-  padding: 5px;
-  margin: 0 auto;
-  border-radius: 20px;
-  border: none;
-  background: $gradientPrimary;
-  color: white;
-  font-size: 18px;
-
-  &:hover {
-    box-shadow: 0px 5px 10px #202020;
-  }
-}
-
 .coupon--wrapper {
   display: flex;
   width: 100%;
@@ -354,5 +344,9 @@ const checkCoupon = () => {
       background: #962e2e;
     }
   }
+}
+
+.disccounted {
+  text-decoration: line-through;
 }
 </style>

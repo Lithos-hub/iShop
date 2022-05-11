@@ -30,13 +30,9 @@ watch(() => route.path, (newPath) => {
   newPath === '/shop' ? window.onscroll = () => listenScroll() : window.onscroll = null
 })
 
-watch(() => localStorage.getItem('docId'), (newDocId) => {
-  newDocId ? userStore.docId = newDocId : userStore.docId = null
-});
-
-onMounted(() => {
-  userStore.currentUser();
-  cartStore.getCartItems();
+onMounted(async () => {
+  await userStore.currentUser();
+  await cartStore.getCartItems();
 });
 
 </script>

@@ -3,8 +3,7 @@ import Auth from "../services/Auth";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
-    user: null,
-    docId: null,
+    user: null
   }),
   actions: {
     async login() {

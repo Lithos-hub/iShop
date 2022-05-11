@@ -1,7 +1,7 @@
 <template>
   <section class="index">
     <button
-      @click="userStore.login()"
+      @click="login()"
       @mouseover="changeText(true)"
       @mouseout="changeText(false)"
     >
@@ -14,9 +14,20 @@
 <script setup>
 // VUEX & UTILS
 import { useUserStore } from "../stores/User";
+import { useProductStore } from "../stores/Product";
+import { useCartStore } from "../stores/Cart";
 import { ref } from "vue";
 
 const userStore = useUserStore();
+const productStore = useProductStore();
+const cartStore = useCartStore();
+
+// ************* => Reset the userStore to default values
+userStore.$reset();
+productStore.$reset();
+cartStore.$reset();
+const login = () => userStore.login();
+// ************* //
 
 let text = ref("Enter");
 let newText = ref(`Let's buy something!`);

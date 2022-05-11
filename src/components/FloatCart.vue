@@ -13,7 +13,7 @@
       <section class="floatCart__body">
         <ul>
           <li
-            class="d-flex"
+            class="d-flex center"
             v-for="product in items"
             @click="goProductDetails(product.id)"
           >
@@ -29,7 +29,7 @@
       </p>
       <footer class="floatCart__footer">
         <h5>Subtotal: {{ subtotal }}€</h5>
-        <button class="floatCart__checkoutBtn" v-if="items.length">Checkout</button>
+        <button class="floatCart__checkoutBtn" v-if="items.length" @click="goCheckout()">Checkout</button>
       </footer>
     </div>
   </div>
@@ -40,6 +40,7 @@
 import { useCartStore } from "../stores/Cart";
 import { useProductStore } from "../stores/product";
 import { computed } from "vue";
+import router from '../router';
 
 const productStore = useProductStore();
 const cartStore = useCartStore();
@@ -63,6 +64,7 @@ const { clientY, clientX } = props;
 const goProductDetails = (id) => {
   productStore.goProductDetails(id);
 };
+const goCheckout = () => router.push('/checkout');
 const close = () => emits("close");
 </script>
 
@@ -141,7 +143,7 @@ li {
   margin-block: 5px;
 
   &:hover {
-    background: rgba(255, 0, 166, 0.259);
+    background: rgba(30, 0, 255, 0.259);
     border-radius: 10px;
   }
 }

@@ -1,11 +1,12 @@
 import {
   auth,
+  deleteUser,
   signAnon,
   db,
-  collection,
   doc,
   setDoc,
   onAuthStateChanged,
+  deleteDoc
 } from "../firebase.config";
 
 import { useUserStore } from "../stores/User";
@@ -28,15 +29,19 @@ class Auth {
     });
   }
 
-  async signAsAnon() {
+  signAsAnon() {
+    const userStore = useUserStore();
     let response = null;
-    await signAnon(auth)
-      .then(() => {
-        const docRef = doc(collection(db, "users"));
-        setDoc(docRef, {
-          docId: docRef.id,
+    signAnon(auth)
+      .then((res) => {
+        const {
+          user: { uid },
+        } = res;
+        setDoc(doc(db, "users", uid), {
+          userUid: uid,
+          cart: [],
         });
-        localStorage.setItem("docId", docRef.id);
+        localStorage.setItem("uid", auth.uid);
         response = "OK";
         console.log("Logged in");
         router.push("/home");
@@ -44,17 +49,22 @@ class Auth {
       .catch((error) => {
         response = "Error: " + error;
       });
-
     return response;
   }
 
   async logout() {
     const userStore = useUserStore();
+    const user = auth.currentUser;
     await auth.signOut().then(() => {
       console.log("Logged out");
       router.push("/");
       userStore.user = null;
     });
+    deleteUser(user)
+    .then(() => console.log('User deteled'))
+    .catch((err) => console.log('Error when deleting user => ', err));
+    await deleteDoc(doc(db, "users", user.uid));
+    localStorage.setItem("uid", null);
   }
 }
 

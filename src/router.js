@@ -8,6 +8,7 @@ const requiresAuth = async (to, from, next) => {
         console.log('Access denied')
         next('/')
     } else {
+        localStorage.setItem('uid', user.uid);
         console.log('Access granted')
         next();
     }

@@ -14,11 +14,18 @@
 .d-flex {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .d-block {
   display: block;
+}
+
+.center {
+  justify-content: center;
+}
+
+.start {
+  justify-content: start;
 }
 
 .ml-1 {
@@ -252,5 +259,25 @@ button:active {
   }
   100% {
     opacity: 1;
+  }
+}
+.checkoutButton {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  width: 90%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease-out;
+  padding: 5px;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: none;
+  background: $gradientPrimary;
+  color: white;
+  font-size: 18px;
+
+  &:hover {
+    box-shadow: 0px 5px 10px #202020;
   }
 }
