@@ -11,21 +11,29 @@
 </template>
 
 <script setup>
-import Navbar from "./components/Navbar.vue";
-import Header from "./components/Header.vue";
+// VUEX & UTILS
+import { useUserStore } from "./stores/User";
+import { useCartStore } from "./stores/Cart";
 import { listenScroll } from "./utils/scrollFX";
 import { useRoute } from 'vue-router';
 import { onMounted, watch } from "vue";
-import { useUserStore } from "./stores/user";
+
+// COMPONENTS
+import Navbar from "./components/Navbar.vue";
+import Header from "./components/Header.vue";
 
 const route = useRoute()
 const userStore = useUserStore()
+const cartStore = useCartStore()
 
 watch(() => route.path, (newPath) => {
   newPath === '/shop' ? window.onscroll = () => listenScroll() : window.onscroll = null
 })
 
-onMounted(() => userStore.currentUser());
+onMounted(async () => {
+  await userStore.currentUser();
+  await cartStore.getCartItems();
+});
 
 </script>
 

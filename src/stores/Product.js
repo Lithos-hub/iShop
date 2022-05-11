@@ -6,6 +6,7 @@ import router from "../router";
 export const useProductStore = defineStore("useProduct", {
   state: () => ({
     isLoading: true,
+    showTimeWarning: false,
     componentKey: 0,
     timeResponse: 0, // => time to get response from server
     productsList: [],
@@ -39,12 +40,23 @@ export const useProductStore = defineStore("useProduct", {
       this.productsList = [];
       let responseNow = null;
       let responseThen = null;
+      let counter = 0;
       if (!this.productsList.length) {
         this.isLoading = true;
         responseNow = new Date(Date.now());
+        const countTimeResponse = setInterval(() => {
+          counter += 1;
+          if (counter === 5) {
+            snackbarStore.showSnackbar(
+              "warning",
+              "Server response is taking a little while... Please, wait."
+            );
+          }
+        }, 1000);
         await axios
           .get("https://fakestoreapi.com/products")
           .then((res) => {
+            clearInterval(countTimeResponse);
             this.componentKey++;
             if (isFiltering && query && !isByCategory) {
               this.productsList = res.data.filter((product) =>

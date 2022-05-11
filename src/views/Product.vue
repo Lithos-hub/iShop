@@ -1,6 +1,11 @@
 <template>
-<p class="black--text"><router-link to="/shop"> Shop</router-link> / <router-link :to="'/shop?category=' + product.category">{{product.category}}</router-link></p>
-<Spinner v-if="isLoading" />
+  <p class="black--text">
+    <router-link to="/shop"> Shop</router-link> /
+    <router-link :to="'/shop?category=' + product.category">{{
+      product.category
+    }}</router-link>
+  </p>
+  <Spinner v-if="isLoading" />
   <section v-show="!isLoading" class="product">
     <article class="product__wrapper">
       <header class="product__header">
@@ -44,8 +49,17 @@
         <div class="d-block absolute__right">
           <h1 class="black--text text-center">{{ product.price }} €</h1>
           <div class="d-block relative">
-            <input placeholder="Quantity" class="input--quantity" v-model="quantity" />
-            <button class="product__add--button" @click="cartStore.addProduct(product, quantity)">Add to the cart</button>
+            <input
+              placeholder="Quantity"
+              class="input--quantity"
+              v-model="quantity"
+            />
+            <button
+              class="product__add--button"
+              @click="cartStore.addProduct(product, quantity)"
+            >
+              Add to the cart
+            </button>
           </div>
           <div class="d-block">
             <button class="product__checkout--button">Checkout</button>
@@ -58,12 +72,15 @@
 </template>
 
 <script setup>
+// VUEX & UTILS
+import { useCartStore } from "../stores/Cart";
+import { useSnackbarStore } from "../stores/snackbar";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+
+// COMPONENTS
 import CardBadge from "../components/CardBadge.vue";
-import { useCartStore } from "../stores/cart";
-import { useSnackbarStore } from "../stores/snackbar";
 import Snackbar from "../components/Snackbar.vue";
 import Spinner from "../components/Spinner.vue";
 
@@ -78,16 +95,22 @@ let rateCount = ref("");
 let showNavbar = ref(false);
 let isLoading = ref(true);
 let quantity = ref(1);
-watch(() => snackbarStore.show, (newVal) => {
-  if (newVal) {
-    showNavbar = true;
+watch(
+  () => snackbarStore.show,
+  (newVal) => {
+    if (newVal) {
+      showNavbar = true;
+    }
   }
-});
-watch(() => route.params.id, (newVal) => {
-  if (newVal) {
-    getProductDetails(newVal);
+);
+watch(
+  () => route.params.id,
+  (newVal) => {
+    if (newVal) {
+      getProductDetails(newVal);
+    }
   }
-})
+);
 
 const getProductDetails = (queryParam) => {
   const progressDiv = document.querySelector(".rating__stars--progress");
@@ -97,19 +120,28 @@ const getProductDetails = (queryParam) => {
   } else {
     url = `https://fakestoreapi.com/products/${productId}`;
   }
-  axios
-    .get(url)
-    .then((response) => {
-      isLoading.value = false;
-      product.value = response.data;
-      const {
-        rating: { rate, count },
-      } = response.data;
-      rateNumber.value = rate;
-      rateCount.value = count;
-      progressDiv.style.minWidth = `${(rate * 147) / 5}px`;
-      progressDiv.style.width = `${(rate * 147) / 5}px`;
-    });
+  let counter = 0;
+  const countTimeResponse = setInterval(() => {
+    counter += 1;
+    if (counter === 5) {
+      snackbarStore.showSnackbar(
+        "warning",
+        "Server response is taking a little while... Please, wait."
+      );
+    }
+  }, 1000);
+  axios.get(url).then((response) => {
+    clearInterval(countTimeResponse);
+    isLoading.value = false;
+    product.value = response.data;
+    const {
+      rating: { rate, count },
+    } = response.data;
+    rateNumber.value = rate;
+    rateCount.value = count;
+    progressDiv.style.minWidth = `${(rate * 147) / 5}px`;
+    progressDiv.style.width = `${(rate * 147) / 5}px`;
+  });
 };
 
 onMounted(() => getProductDetails());
@@ -232,7 +264,7 @@ small {
 }
 
 .product__add--button {
-  transition: all .3s ease-out;
+  transition: all 0.3s ease-out;
   cursor: pointer;
   background: $gradientPrimary;
   border-radius: 25px;
@@ -244,14 +276,14 @@ small {
   margin-top: 10px;
   min-width: 200px;
 
-    &:hover {
-      box-shadow: 0px 5px 10px #404040;
-      transform: scale(1.05);
+  &:hover {
+    box-shadow: 0px 5px 10px #404040;
+    transform: scale(1.05);
   }
 }
 
 .product__checkout--button {
-  transition: all .3s ease-out;
+  transition: all 0.3s ease-out;
   cursor: pointer;
   background: $gradientSecondary;
   border-radius: 25px;

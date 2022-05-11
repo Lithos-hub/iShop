@@ -37,7 +37,7 @@ const snackbarStore = useSnackbarStore();
 }
 
 .warning {
-    background: #e4b827;
+    background: #ca7717;
 }
 
 .danger {
