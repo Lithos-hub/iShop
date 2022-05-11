@@ -20,7 +20,7 @@ export const listenScroll = () => {
       links.style.right = "2vh";
     }
     if (categoriesMenu) {
-      categoriesMenu.style.top = window.innerWidth < 1920 ? "6.8vh" : "5vh";
+      categoriesMenu.style.top = window.innerWidth < 1920 ? "6.4vh" : "6.6vh";
       categoriesMenu.style.background = "linear-gradient(120deg, #4cbaff, #6764ff, #9d00ff, #a04cff)";
       categoriesMenu.style.boxShadow = "0px 0px 10px #404040";
     }
