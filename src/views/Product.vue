@@ -148,13 +148,15 @@ const getProductDetails = (queryParam) => {
 };
 
 const addProductToCart = () => {
-  const matchedExistedProduct = items.value.find((item) => item.id === product.id);
+  const matchedExistedProduct = items.value.find((item) => item.id === product.value.id);
 
   console.log('Product matched ==> ', matchedExistedProduct);
 
+  const existedQuantity = parseInt(matchedExistedProduct.quantity)
+
   let productQuantity = matchedExistedProduct
-    ? (matchedExistedProduct.quantity += quantity.value)
-    : quantity.value;
+    ? existedQuantity + parseInt(quantity.value)
+    : parseInt(quantity.value);
 
   const productToAdd = { ...product.value, quantity: productQuantity };
 
