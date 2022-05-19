@@ -10,12 +10,15 @@
 </template>
 
 <script setup>
+// VUEX & UTILS
+import { useSnackbarStore } from "../stores/snackbar";
+import { useProductStore } from "../stores/Product";
 import { onMounted, computed, watch, defineAsyncComponent } from "vue";
+import { useRoute } from "vue-router";
+
+// COMPONENTS
 import Snackbar from "../components/Snackbar.vue";
 import Spinner from "../components/Spinner.vue";
-import { useProductStore } from "../stores/Product";
-import { useRoute } from "vue-router";
-import { useSnackbarStore } from "../stores/snackbar";
 
 const ProductsList = defineAsyncComponent({
   loader: () => import("../components/ProductsList.vue"),

@@ -29,18 +29,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { useUserStore } from "../stores/user";
-import Services from "../services/Services";
+// UTILS
+import { ref } from "vue";
 
-const userStore = useUserStore();
-
-const mayor = ref(0);
-const minor = ref(8);
+const mayor = ref(1);
+const minor = ref(0);
 const patch = ref(0);
 const version = `V${mayor.value}.${minor.value}.${patch.value}`;
-
-onMounted(() => Services.pushUserToFirestore(userStore.user))
 
 </script>
 

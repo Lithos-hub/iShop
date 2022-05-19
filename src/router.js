@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from './stores/user';
+import { useUserStore } from './stores/User';
 
 const requiresAuth = async (to, from, next) => {
     const userStore = useUserStore();
     const user = await userStore.currentUser();
     if (!user) {
-        // console.log('Access denied')
+        console.log('Access denied')
         next('/')
     } else {
-        // console.log('Access granted')
+        localStorage.setItem('uid', user.uid);
+        console.log('Access granted')
         next();
     }
 }
@@ -42,6 +43,12 @@ const routes = [
         path: '/product/:id',
         name: 'Product',
         component: () => import('./views/Product.vue'),
+        beforeEnter: requiresAuth,
+    },
+    {
+        path: '/checkout',
+        name: 'Checkout',
+        component: () => import('./views/Checkout.vue'),
         beforeEnter: requiresAuth,
     },
     {

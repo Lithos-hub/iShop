@@ -1,12 +1,22 @@
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import {
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged,
+  deleteUser
+} from "firebase/auth";
 import {
   getFirestore,
   collection,
   addDoc,
   doc,
   updateDoc,
+  setDoc,
+  getDocs,
+  arrayUnion,
+  arrayRemove,
+  deleteDoc
 } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -19,9 +29,8 @@ const firebaseConfig = {
   projectId: "ishop-10ba5",
   storageBucket: "ishop-10ba5.appspot.com",
   messagingSenderId: "46371527274",
-  appId: "1:46371527274:web:bb15fd1e5f81705b170813"
+  appId: "1:46371527274:web:bb15fd1e5f81705b170813",
 };
-
 
 // Initialize Firebase
 
@@ -39,4 +48,10 @@ export {
   onAuthStateChanged,
   doc,
   updateDoc,
+  setDoc,
+  getDocs,
+  arrayUnion,
+  arrayRemove,
+  deleteUser,
+  deleteDoc
 };
