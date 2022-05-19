@@ -9,13 +9,16 @@ import {
 import {
   getFirestore,
   collection,
-  addDoc,
   doc,
+  addDoc,
   updateDoc,
   setDoc,
+  getDoc,
   getDocs,
   arrayUnion,
   arrayRemove,
+  increment,
+  query,
   deleteDoc
 } from "firebase/firestore";
 
@@ -40,18 +43,21 @@ const db = getFirestore(firebase);
 const signAnon = signInAnonymously;
 
 export {
-  auth,
-  signAnon,
-  db,
-  collection,
-  addDoc,
-  onAuthStateChanged,
-  doc,
-  updateDoc,
-  setDoc,
-  getDocs,
-  arrayUnion,
-  arrayRemove,
-  deleteUser,
-  deleteDoc
+  auth, // => auth
+  signAnon, // => auth
+  onAuthStateChanged, // => auth
+  deleteUser, // => Auth
+  db, // => Firestore
+  collection, // => Firestore
+  doc, // => Firestore
+  addDoc, // => Firestore
+  updateDoc, // => Firestore
+  setDoc, // => Firestore
+  getDoc, // => Firestore
+  getDocs, // => Firestore
+  arrayUnion, // => Firestore
+  arrayRemove, // => Firestore
+  deleteDoc, // => Firestore
+  increment, // => Firestore
+  query, // => Firestore
 };

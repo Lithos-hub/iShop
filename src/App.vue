@@ -32,7 +32,8 @@ watch(() => route.path, (newPath) => {
 
 onMounted(async () => {
   await userStore.currentUser();
-  await cartStore.getCartItems();
+  if (userStore.user) await cartStore.getCartItems();
+  
 });
 
 </script>
@@ -49,7 +50,7 @@ onMounted(async () => {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0px 0px 10px #404040;
+  box-shadow: 0px 0px 20px #40404084;
   color: #151515;
   padding: 0 auto;
 }

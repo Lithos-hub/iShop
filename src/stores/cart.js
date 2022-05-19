@@ -16,44 +16,34 @@ export const useCartStore = defineStore("useCart", {
     getItems: (state) => state.items,
     getCartDisccounted: (state) =>
       Math.round(
-        state.disccountedItems.reduce((a, b) => a + b.price * b.quantity, 0) * 100
+        state.disccountedItems.reduce((a, b) => a + b.price * b.quantity, 0) *
+          100
       ) / 100,
   },
   actions: {
     async getCartItems() {
+      console.log("Getting all cart items...");
       this.items = await CartProduct.getCartProducts();
     },
-    async addProduct(product, quantity) {
+    async addProduct(productToAdd) {
       const snackbarStore = useSnackbarStore();
-      // const IsProductAlreadyInCart = this.items.find((item) => item.id === product.id);
+      
+      console.log("Product to add ==> ", productToAdd);
 
-      // if (!IsProductAlreadyInCart) {
-      //   this.items.push({ ...product, quantity });
-      //   snackbarStore.showSnackbar("success", "Product added to cart");
-      // } else {
-      //   this.items.at(this.items.indexOf(product)).quantity += quantity;
-      //   snackbarStore.showSnackbar("success", "Product quantity updated");
-      // }
-
-      console.log('Addding product: ',  { ...product, quantity })
-
-      await CartProduct.addCartProduct({ ...product, quantity })
+      await CartProduct.addCartProduct(productToAdd)
         .then(() => {
-          console.log("Product added to cart");
           snackbarStore.showSnackbar("success", "Product added to cart");
-          console.log("Getting all cart items...");
           this.getCartItems();
         })
         .catch((err) => {
           console.log("Error when adding product to cart: ", err);
           snackbarStore.showSnackbar("error", "Error when adding product");
         });
+
+      console.log("Addding product: ", productToAdd);
     },
-    getExistsProduct(productId) {
-      return this.items.find((item) => item.id === productId);
-    },
-    mapProducts(payload) {
-      this.items = payload;
+    async clearCart() {
+      await CartProduct.clearCart()
     },
     mapDisccountedProducts(payload) {
       this.disccountedItems = payload;
@@ -61,7 +51,6 @@ export const useCartStore = defineStore("useCart", {
     async deleteSingleCartProduct(payload) {
       await CartProduct.deleteSingleCartProduct(payload).then(() => {
         console.log("Product removed from cart");
-        console.log("Getting all cart items...");
         this.getCartItems();
       });
     },

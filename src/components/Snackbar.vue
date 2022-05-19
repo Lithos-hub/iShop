@@ -24,7 +24,7 @@ const snackbarStore = useSnackbarStore();
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: 0px 2px 10px #404040;
+    box-shadow: 0px 2px 10px #40404084;
     text-align: center;
 }
 

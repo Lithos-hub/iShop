@@ -32,8 +32,8 @@
 // UTILS
 import { ref } from "vue";
 
-const mayor = ref(0);
-const minor = ref(9);
+const mayor = ref(1);
+const minor = ref(0);
 const patch = ref(0);
 const version = `V${mayor.value}.${minor.value}.${patch.value}`;
 
@@ -45,7 +45,7 @@ const version = `V${mayor.value}.${minor.value}.${patch.value}`;
 .home {
   border-radius: 25px;
   padding: 50px;
-  box-shadow: 0px 5px 30px #202020;
+  box-shadow: 0px 5px 30px #40404084;
 }
 
 h1 {

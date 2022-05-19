@@ -11,13 +11,13 @@
         placeholder="Search for a product"
         @change="searchProduct"
       />
-      <div class="navbar__search--icon" @click="searchProduct">
+      <button class="navbar__search--icon button__special" @click="searchProduct">
         <mdicon
           id="search__icon"
           name="magnify"
           :size="isUsingFullHDScreen ? 23 : 20"
         />
-      </div>
+      </button>
     </div>
     <div v-show="isUsingFullHDScreen" class="navbar__links--wrapper">
       <div v-for="link in links">
@@ -85,12 +85,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from "vue";
-import { listenScroll } from "../utils/scrollFX";
+// VUEX & UTILS
 import { useCartStore } from "../stores/Cart";
 import { useUserStore } from "../stores/User";
 import { useProductStore } from "../stores/Product";
+import { onMounted, ref, computed } from "vue";
+import { listenScroll } from "../utils/scrollFX";
 import { useRoute, useRouter } from "vue-router";
+
+// COMPONENTS
 import FloatCart from "./FloatCart.vue";
 
 const cartStore = useCartStore();
@@ -109,8 +112,8 @@ const getClientCoords = () => {
   const cartButtonExpanded = document.querySelector("#cartButton__expanded");
   if (cartButtonContracted) {
     cartButtonContracted.addEventListener("mouseover", (e) => {
-      clientY.value = e.clientY;
-      clientX.value = e.clientX - 200;
+      clientY.value = e.clientY + 10;
+      clientX.value = e.clientX - 300;
 
       setTimeout(() => {
         showingFloatCart.value = true;
@@ -119,8 +122,8 @@ const getClientCoords = () => {
   }
   if (cartButtonExpanded) {
     cartButtonExpanded.addEventListener("mouseover", (e) => {
-      clientY.value = e.clientY;
-      clientX.value = e.clientX;
+      clientY.value = e.clientY + 10;
+      clientX.value = e.clientX - 50;
 
       setTimeout(() => {
         showingFloatCart.value = true;
@@ -175,7 +178,7 @@ nav {
   left: 0;
   height: 100%;
   width: 100%;
-  box-shadow: 0px 0px 10px #404040;
+  box-shadow: 0px 0px 10px #40404084;
 }
 
 .navbar__logo--shape {
@@ -217,9 +220,10 @@ nav {
   input {
     width: 100%;
     height: clamp(25px, 35px, 45px);
-    border-radius: 5px 0px 0px 5px;
+    border-radius: 25px 0px 0px 25px;
     border: none;
-    padding-left: 10px;
+    padding-left: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.435);
 
     &:focus {
       outline: none;
@@ -230,18 +234,16 @@ nav {
 .navbar__search--icon {
   position: relative;
   width: 50px;
+  border: none;
+  height: 37px;
   margin-right: 20px;
   cursor: pointer;
-  height: clamp(15px, 30px, 35px);
-  background: #202020;
-  padding-inline: 10px;
-  padding-block: clamp(5px, 10px, 4px);
-  border-radius: 0px 5px 5px 0px;
+  height: clamp(15px, 40px, 37px);
+  background: $gradientPrimary;
+  padding-block: clamp(5px, 10px, 3.8px);
+  border-radius: 0px 25px 25px 0px;
   color: white;
-
-  &:hover {
-    color: $textPrimary;
-  }
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.435);
 
   #search__icon {
     position: absolute;

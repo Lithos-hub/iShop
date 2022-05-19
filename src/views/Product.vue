@@ -46,7 +46,7 @@
           <h3>Product description</h3>
           <p class="product__description">{{ product.description }}</p>
         </div>
-        <div class="d-block absolute__right">
+        <section class="d-block absolute__right">
           <h1 class="black--text text-center">{{ product.price }} €</h1>
           <div class="d-block relative">
             <input
@@ -55,16 +55,14 @@
               v-model="quantity"
             />
             <button
-              class="product__add--button"
-              @click="cartStore.addProduct(product, quantity)"
+              class="product__add--button button__special"
+              @click="addProductToCart"
             >
               Add to the cart
             </button>
           </div>
-          <div class="d-block">
-            <button class="product__checkout--button">Checkout</button>
-          </div>
-        </div>
+          <CheckoutButton class="absolute__bottom" />
+        </section>
       </div>
     </article>
   </section>
@@ -76,25 +74,30 @@
 import { useCartStore } from "../stores/Cart";
 import { useSnackbarStore } from "../stores/snackbar";
 import axios from "axios";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 
 // COMPONENTS
 import CardBadge from "../components/CardBadge.vue";
 import Snackbar from "../components/Snackbar.vue";
 import Spinner from "../components/Spinner.vue";
+import CheckoutButton from "../components/CheckoutButton.vue";
 
 const route = useRoute();
 const cartStore = useCartStore();
 const snackbarStore = useSnackbarStore();
 
 const productId = route.params.id;
-let product = ref({});
+
+const items = computed(() => cartStore.items);
+
 let rateNumber = ref("");
 let rateCount = ref("");
 let showNavbar = ref(false);
 let isLoading = ref(true);
+let product = ref({});
 let quantity = ref(1);
+
 watch(
   () => snackbarStore.show,
   (newVal) => {
@@ -142,6 +145,20 @@ const getProductDetails = (queryParam) => {
     progressDiv.style.minWidth = `${(rate * 147) / 5}px`;
     progressDiv.style.width = `${(rate * 147) / 5}px`;
   });
+};
+
+const addProductToCart = () => {
+  const matchedExistedProduct = items.value.find((item) => item.id === product.id);
+
+  console.log('Product matched ==> ', matchedExistedProduct);
+
+  let productQuantity = matchedExistedProduct
+    ? (matchedExistedProduct.quantity += quantity.value)
+    : quantity.value;
+
+  const productToAdd = { ...product.value, quantity: productQuantity };
+
+  cartStore.addProduct(productToAdd);
 };
 
 onMounted(() => getProductDetails());
@@ -248,18 +265,23 @@ small {
 }
 
 .input--quantity {
-  width: 50px;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  width: 100px;
   position: relative;
   display: block;
   margin: 0 auto;
   border-radius: 2px;
   padding: 5px;
   border: none;
-  box-shadow: 0px 1px 2px #404040;
+  font-weight: bold;
+  font-size: 1.2em;
+  box-shadow: 0px 1px 5px #40404084;
   text-align: center;
 
   &:focus {
     outline: none;
+    background: #151515;
+    color: white;
   }
 }
 
@@ -269,17 +291,15 @@ small {
   background: $gradientPrimary;
   border-radius: 25px;
   border: none;
-  padding: 5px;
-  padding-inline: 20px;
+  padding: 25px, 25px;
   color: white;
   font-size: 1em;
   margin-top: 10px;
-  min-width: 200px;
-
-  &:hover {
-    box-shadow: 0px 5px 10px #404040;
-    transform: scale(1.05);
-  }
+  width: 100%;
+  height: auto;
+  transition: all 0.3s ease-out;
+  padding: 10px 20px;
+  border-radius: 20px;
 }
 
 .product__checkout--button {
@@ -296,7 +316,7 @@ small {
   min-width: 200px;
 
   &:hover {
-    box-shadow: 0px 5px 10px #404040;
+    box-shadow: 0px 5px 10px #40404084;
     transform: scale(1.05);
   }
 }

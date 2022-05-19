@@ -25,11 +25,11 @@
         </ul>
       </section>
       <p class="absolute__centered" v-if="!items.length">
-        There are not products in your shopping cart yet.
+        There are no products in your shopping cart yet.
       </p>
-      <footer class="floatCart__footer">
-        <h5>Subtotal: {{ subtotal }}€</h5>
-        <button class="floatCart__checkoutBtn" v-if="items.length" @click="goCheckout()">Checkout</button>
+      <footer class="floatCart__footer d-flex">
+        <h3>Subtotal: {{ subtotal }}€</h3>
+        <CheckoutButton :items="items" />
       </footer>
     </div>
   </div>
@@ -40,7 +40,9 @@
 import { useCartStore } from "../stores/Cart";
 import { useProductStore } from "../stores/product";
 import { computed } from "vue";
-import router from '../router';
+
+// COMPONENTS
+import CheckoutButton from './CheckoutButton.vue';
 
 const productStore = useProductStore();
 const cartStore = useCartStore();
@@ -64,7 +66,7 @@ const { clientY, clientX } = props;
 const goProductDetails = (id) => {
   productStore.goProductDetails(id);
 };
-const goCheckout = () => router.push('/checkout');
+
 const close = () => emits("close");
 </script>
 
@@ -75,12 +77,12 @@ const close = () => emits("close");
 .floatCart__wrapper {
   position: fixed;
   height: 450px;
-  width: 350px;
+  width: 370px;
   z-index: 999999;
 }
 .floatCart {
   background: white;
-  box-shadow: 0px 2px 10px #404040;
+  box-shadow: 0px 2px 10px #40404084;
   position: relative;
   border-radius: 10px;
   width: 100%;
@@ -165,33 +167,17 @@ img {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 35px;
+  height: 50px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   border-radius: 0px 0px 10px 10px;
   font-weight: bold;
   border-top: 1px solid gray;
-  h5 {
+  h3 {
     margin-block: auto;
     margin-left: 25px;
   }
 }
 
-.floatCart__checkoutBtn {
-  transition: all 0.3s ease-out;
-  cursor: pointer;
-  background: $gradientPrimary;
-  border: none;
-  border-radius: 10px;
-  margin-right: 25px;
-  padding-inline: 10px;
-  color: white;
-  height: 30px;
-  margin-block: auto;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
 </style>

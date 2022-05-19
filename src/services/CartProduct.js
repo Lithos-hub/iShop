@@ -1,64 +1,77 @@
-import { getDoc } from "firebase/firestore";
 import {
-    db,
-    updateDoc,
-    doc,
-    arrayUnion, 
-    arrayRemove
-  } from "../firebase.config";
-import { useUserStore } from '../stores/User'
+  db,
+  collection,
+  updateDoc,
+  doc,
+  setDoc,
+  getDocs,
+  arrayRemove,
+  query,
+  deleteDoc,
+} from "../firebase.config";
+import { useUserStore } from "../stores/User";
 
 class CartProduct {
-    addCartProduct(product) {
-        const userStore = useUserStore();
-        const {
-            user: { uid },
-        } = userStore;
+  getCartProducts() {
+    let cartProducts = [];
+    const userStore = useUserStore();
+    const {
+      user: { uid },
+    } = userStore;
 
-        return new Promise((resolve) => {
-            const docRef = doc(db, "users", uid)
-            const response = updateDoc(docRef, {
-                'cart': arrayUnion(product)
-            });
-            resolve(response);
-        })
+    return new Promise(async (resolve) => {
+      const q = query(collection(db, "users", uid, "cart"));
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const docData = doc.data();
+        cartProducts.push(docData);
+      });
+      resolve(cartProducts);
+    });
+  }
+
+  async addCartProduct(product) {
+    const userStore = useUserStore();
+    const {
+      user: { uid },
+    } = userStore;
+
+    try {
+      await setDoc(
+        doc(db, "users", uid, "cart", `product-id-${product.id}`),
+        product
+      );
+    } catch (error) {
+      console.log("Error adding product => ", error);
     }
+  }
 
-    getCartProducts() {
-        const userStore = useUserStore();
-        const {
-            user: { uid },
-        } = userStore;
-
-        return new Promise(async (resolve) => {
-            const docRef = doc(db, "users", uid)
-            const response = await getDoc(docRef);
-            if (response.exists()) {
-                resolve(response.data().cart);
-            } else {
-                resolve([]);
-            }
-        })
+  async clearCart() {
+    const userStore = useUserStore();
+    const {
+      user: { uid },
+    } = userStore;
+    const productsList = await this.getCartProducts();
+    for (let product of productsList) {
+      await deleteDoc(doc(db, "users", uid, "cart", `product-id-${product.id}`));
     }
+  }
 
-    updateCartProduct() {
+  deleteSingleCartProduct(product) {
+    const userStore = useUserStore();
+    const {
+      user: { uid },
+    } = userStore;
 
-    }
-
-    deleteSingleCartProduct(product) {
-        const userStore = useUserStore();
-        const {
-            user: { uid },
-        } = userStore;
-
-        return new Promise((resolve) => {
-            const docRef = doc(db, "users", uid)
-            const response = updateDoc(docRef, {
-                'cart': arrayRemove(product)
-            });
-            resolve(response);
-        })
-    }
+    return new Promise((resolve) => {
+      const docRef = doc(db, "users", uid);
+      const response = updateDoc(docRef, {
+        cart: arrayRemove(product),
+      });
+      resolve(response);
+    });
+  }
 }
 
 export default new CartProduct();

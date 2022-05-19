@@ -82,11 +82,7 @@
       <small class="success--text" v-if="correctCoupon && couponChecked"
         >Coupon -15% applied!</small
       >
-      <router-link to="/checkout" class="text-none">
-        <button class="checkoutButton">
-          Checkout {{ items.length > 1 ? "products" : "product" }}
-        </button>
-      </router-link>
+      <CheckoutButton :items="items" class="absolute__bottom" />
     </div>
   </section>
 </template>
@@ -99,8 +95,10 @@ import { ref, computed } from "vue";
 
 // COMPONENTS
 import CardBadge from "../components/CardBadge.vue";
+import CheckoutButton from "../components/CheckoutButton.vue";
 
 const cartStore = useCartStore();
+
 
 const { items } = storeToRefs(cartStore);
 const subtotal = computed(() => cartStore.getCartSubtotal);
@@ -186,7 +184,7 @@ const checkCoupon = () => {
   display: flex;
   cursor: pointer;
   padding-inline: 20px;
-  box-shadow: 0px 2px 10px #404040;
+  box-shadow: 0px 2px 10px #40404084;
   margin-block: 20px;
 
   &:hover {
@@ -270,7 +268,7 @@ const checkCoupon = () => {
 .cart__item--quantityButton {
   width: 50px;
   height: 50px;
-  box-shadow: 0px 2px 2px #505050;
+  box-shadow: 0px 2px 2px #40404084;
   background: #f5f5f5;
   margin-inline: 2px;
   display: flex;
@@ -323,7 +321,7 @@ const checkCoupon = () => {
     padding: 10px;
     width: 100%;
     border: none;
-    box-shadow: 0px 0px 3px black;
+    box-shadow: 0px 0px 3px #40404084;
 
     &:focus {
       outline: none;
@@ -335,7 +333,7 @@ const checkCoupon = () => {
     cursor: pointer;
     padding: 5px;
     border: none;
-    box-shadow: 0px 0px 3px black;
+    box-shadow: 0px 0px 3px #40404084;
     background: $textDanger;
     color: white;
     font-weight: bold;

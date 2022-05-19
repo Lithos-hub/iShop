@@ -1,12 +1,15 @@
 import {
   auth,
+  collection,
   deleteUser,
   signAnon,
   db,
   doc,
   setDoc,
+  addDoc,
   onAuthStateChanged,
-  deleteDoc
+  deleteDoc,
+  getDoc,
 } from "../firebase.config";
 
 import { useUserStore } from "../stores/User";
@@ -30,17 +33,21 @@ class Auth {
   }
 
   signAsAnon() {
-    const userStore = useUserStore();
     let response = null;
     signAnon(auth)
-      .then((res) => {
+      .then(async (res) => {
         const {
           user: { uid },
         } = res;
-        setDoc(doc(db, "users", uid), {
-          userUid: uid,
-          cart: [],
-        });
+        console.log("Setting docs...");
+        try {
+          await setDoc(doc(db, "users", uid), {
+            userUid: uid,
+          });
+        } catch (error) {
+          console.log("Error when setting docs => ", error);
+        }
+
         localStorage.setItem("uid", auth.uid);
         response = "OK";
         console.log("Logged in");
@@ -61,8 +68,8 @@ class Auth {
       userStore.user = null;
     });
     deleteUser(user)
-    .then(() => console.log('User deteled'))
-    .catch((err) => console.log('Error when deleting user => ', err));
+      .then(() => console.log("User deteled"))
+      .catch((err) => console.log("Error when deleting user => ", err));
     await deleteDoc(doc(db, "users", user.uid));
     localStorage.setItem("uid", null);
   }

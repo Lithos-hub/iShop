@@ -1,7 +1,12 @@
 <template>
+  <DialogMessage
+    message="Order completed!"
+    class="dialogMessage"
+    v-if="showDialog"
+  />
   <div class="checkout">
     <div class="container__left">
-      <h1>Checkout</h1>
+      <h1>Checkout {{ items.length === 1 ? "item" : "items" }}</h1>
       <ul>
         <li class="checkout__item" v-for="item in items">
           <article class="d-flex">
@@ -10,7 +15,7 @@
                 <img :src="item.image" :alt="item.title + ' picture'" />
               </div>
               <div>
-                <h2>{{ item.title }}</h2>
+                <h3>{{ item.title }}</h3>
               </div>
             </section>
             <section>
@@ -23,7 +28,9 @@
     <div class="container__right">
       <h2>Total: {{ disccounted > 0 ? disccounted : noDisccounted }}€</h2>
       <section>
-        <button class="absolute__bottom checkoutButton">Buy</button>
+        <button class="absolute__bottom buyButton" @click="buyProducts">
+          Buy
+        </button>
       </section>
     </div>
   </div>
@@ -32,13 +39,27 @@
 <script setup>
 // VUEX & UTILS
 import { useCartStore } from "../stores/Cart";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
+import router from "../router";
+import DialogMessage from "../components/DialogMessage.vue";
 
 const cartStore = useCartStore();
+const showDialog = ref(false);
 const { items } = storeToRefs(cartStore);
 const noDisccounted = computed(() => cartStore.getCartSubtotal);
 const disccounted = cartStore.getCartSubtotal;
+
+const buyProducts = () => {
+  showDialog.value = true;
+
+  setTimeout(async () => {
+    showDialog.value = false;
+    await cartStore.clearCart();
+    cartStore.getCartItems();
+    router.push("/home");
+  }, 4000);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -50,7 +71,7 @@ const disccounted = cartStore.getCartSubtotal;
   display: flex;
   width: 100%;
   justify-content: space-between;
-  gap: 25px;
+  gap: 50px;
 }
 
 ul {
@@ -62,12 +83,13 @@ ul {
   }
 }
 .checkout__item {
-  padding: 2em;
-  border-bottom: 1px solid #505050;
+  padding: 1em;
+  border-bottom: 1px solid #50505055;
   img {
-    width: 100px;
+    width: 70px;
+    height: auto;
   }
-  h2 {
+  h3 {
     color: black;
     margin-left: 2em;
   }
@@ -76,7 +98,7 @@ ul {
 .container__left {
   position: relative;
   background: white;
-  padding: 1em;
+  padding: 2em;
   width: 100%;
   border-radius: 25px;
 
@@ -88,7 +110,7 @@ ul {
 .container__right {
   position: relative;
   background: white;
-  width: 25vw;
+  width: 500px;
   height: auto;
   border-radius: 25px;
 
@@ -98,6 +120,25 @@ ul {
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+}
+
+.buyButton {
+  cursor: pointer;
+  position: absolute;
+  width: auto;
+  height: auto;
+  transition: all 0.3s ease-out;
+  padding: 10px;
+  margin-inline: 20px;
+  border-radius: 20px;
+  border: none;
+  background: $gradientPrimary;
+  color: white;
+  font-size: 18px;
+
+  &:hover {
+    box-shadow: 0px 5px 10px #40404084;
   }
 }
 </style>
