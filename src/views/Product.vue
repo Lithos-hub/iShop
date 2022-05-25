@@ -152,10 +152,8 @@ const addProductToCart = () => {
 
   console.log('Product matched ==> ', matchedExistedProduct);
 
-  const existedQuantity = parseInt(matchedExistedProduct.quantity)
-
   let productQuantity = matchedExistedProduct
-    ? existedQuantity + parseInt(quantity.value)
+    ? parseInt(matchedExistedProduct.quantity) + parseInt(quantity.value)
     : parseInt(quantity.value);
 
   const productToAdd = { ...product.value, quantity: productQuantity };
