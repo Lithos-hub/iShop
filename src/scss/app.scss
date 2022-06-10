@@ -1,5 +1,9 @@
 @import "./variables.scss";
 
+.container {
+  margin-inline: 2rem;
+  margin-block: 1rem;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -46,6 +50,10 @@
 
 .ml-5 {
   margin-left: 5rem;
+}
+
+.mx-5 {
+  margin-inline: 5rem;
 }
 
 .text-center {

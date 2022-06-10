@@ -61,7 +61,7 @@
               Add to the cart
             </button>
           </div>
-          <CheckoutButton class="absolute__bottom" />
+          <CheckoutButton class="absolute__bottom" @click="addProductToCart" />
         </section>
       </div>
     </article>

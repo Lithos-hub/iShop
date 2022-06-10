@@ -1,10 +1,8 @@
 <template>
     <div>
-      <router-link to="/checkout" class="text-none">
         <button class="checkoutButton button__special" @click="useNavigation.goTo('/checkout')">
         {{ items ? `Checkout ${items.length > 1 ? "products" : "product"}` : 'Checkout' }}
         </button>
-      </router-link>
     </div>
 </template>
 

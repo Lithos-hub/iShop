@@ -49,10 +49,12 @@ export const useCartStore = defineStore("useCart", {
       this.disccountedItems = payload;
     },
     async deleteSingleCartProduct(payload) {
-      await CartProduct.deleteSingleCartProduct(payload).then(() => {
+      await CartProduct.deleteSingleCartProduct(payload)
+      .then(() => {
         console.log("Product removed from cart");
         this.getCartItems();
-      });
+      })
+      .catch((err) => console.log('Error when deleting product: ', err))
     },
   },
 });

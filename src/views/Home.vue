@@ -34,7 +34,7 @@ import { ref } from "vue";
 
 const mayor = ref(1);
 const minor = ref(0);
-const patch = ref(0);
+const patch = ref(1);
 const version = `V${mayor.value}.${minor.value}.${patch.value}`;
 
 </script>

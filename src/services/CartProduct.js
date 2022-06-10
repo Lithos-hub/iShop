@@ -59,16 +59,16 @@ class CartProduct {
   }
 
   deleteSingleCartProduct(product) {
+    const productToRemove = { ...product }
+    console.log('Product to remove: ', productToRemove)
+
     const userStore = useUserStore();
     const {
       user: { uid },
     } = userStore;
 
     return new Promise((resolve) => {
-      const docRef = doc(db, "users", uid);
-      const response = updateDoc(docRef, {
-        cart: arrayRemove(product),
-      });
+      const response = deleteDoc(doc(db, "users", uid, "cart", `product-id-${productToRemove.id}`));
       resolve(response);
     });
   }

@@ -68,7 +68,15 @@
     </div>
     <div class="cart__summary">
       <h1>Order summary</h1>
-      <h3 class="cart__summary--subtotal">Subtotal: <span :class="isDisccounted ? 'disccounted danger--text' : ''">{{ subtotal }}€</span> <span class="success--text" v-if="isDisccounted">{{ subtotalDisccounted }}€ </span></h3>
+      <h3 class="cart__summary--subtotal">
+        Subtotal:
+        <span :class="isDisccounted ? 'disccounted danger--text' : ''"
+          >{{ subtotal }}€</span
+        >
+        <span class="success--text" v-if="isDisccounted"
+          >{{ subtotalDisccounted }}€
+        </span>
+      </h3>
       <div class="coupon--wrapper">
         <input
           placeholder="XX000000"
@@ -82,7 +90,9 @@
       <small class="success--text" v-if="correctCoupon && couponChecked"
         >Coupon -15% applied!</small
       >
-      <CheckoutButton :items="items" class="absolute__bottom" />
+      <div class="container mx-5 absolute__bottom">
+        <CheckoutButton :items="items"/>
+      </div>
     </div>
   </section>
 </template>
@@ -99,10 +109,10 @@ import CheckoutButton from "../components/CheckoutButton.vue";
 
 const cartStore = useCartStore();
 
-
 const { items } = storeToRefs(cartStore);
 const subtotal = computed(() => cartStore.getCartSubtotal);
 const subtotalDisccounted = computed(() => cartStore.getCartDisccounted);
+const productToRemove = ref({});
 
 let productsChecked = ref([]);
 let couponCode = ref("");
@@ -124,15 +134,17 @@ const toggleProduct = (product) => {
 const increment = (product) => product.quantity++;
 const decrease = (product) =>
   product.quantity > 1 ? product.quantity-- : null;
-const deleteSingleCartProduct = (product) =>
-  cartStore.deleteSingleCartProduct(product);
+const deleteSingleCartProduct = (product) => {
+  productToRemove.value = product;
+  cartStore.deleteSingleCartProduct(productToRemove.value);
+}
 const removeMultiple = () =>
   productsChecked.value.forEach(
     (prod) => cartStore.deleteSingleCartProduct(prod),
     (productsChecked.value = [])
   );
 const checkCoupon = () => {
-  isDisccounted.value = true
+  isDisccounted.value = true;
   let test = /[A-Z]{2}\d{6}/.test(couponCode.value);
   if (test) {
     correctCoupon.value = true;
@@ -140,7 +152,7 @@ const checkCoupon = () => {
     const discountedProducts = items.value.map((product) => {
       return {
         ...product,
-        price: parseInt(product.price) - (parseInt(product.price) * 0.15),
+        price: parseInt(product.price) - parseInt(product.price) * 0.15,
       };
     });
     cartStore.mapDisccountedProducts(discountedProducts);

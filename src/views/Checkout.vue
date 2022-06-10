@@ -50,15 +50,16 @@ const { items } = storeToRefs(cartStore);
 const noDisccounted = computed(() => cartStore.getCartSubtotal);
 const disccounted = cartStore.getCartSubtotal;
 
-const buyProducts = () => {
+const buyProducts = async () => {
   showDialog.value = true;
+  await cartStore.clearCart();
+  await cartStore.getCartItems();
 
   setTimeout(async () => {
     showDialog.value = false;
-    await cartStore.clearCart();
-    cartStore.getCartItems();
-    router.push("/home");
-  }, 4000);
+  }, 3000);
+  setTimeout(() => router.push("/home"), 4000)
+    
 };
 </script>
 
